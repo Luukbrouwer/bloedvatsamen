@@ -1,3 +1,8 @@
+//===================
+//dit is het script voor berekenen wat de output (stretch)
+//==================
+
+
 using System.Collections;
 using System.Collections.Generic;
 

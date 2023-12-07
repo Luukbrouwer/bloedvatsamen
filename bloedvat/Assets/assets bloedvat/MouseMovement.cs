@@ -1,3 +1,11 @@
+//=========================================
+//dit is het script voor de input
+//op dit moment is dat spatiebalk die een kracht toevoegd aan de guidewire
+//=========================================
+
+
+
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
