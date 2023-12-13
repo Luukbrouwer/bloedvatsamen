@@ -1,4 +1,4 @@
-using System.Collections;
+/*using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
@@ -20,3 +20,4 @@ public class PositionScript : MonoBehaviour
         positionText.text = "Position: " + plane.position.y.ToString("F2") + "m"; //"2" = 2 decimals
     }
 }
+*/
