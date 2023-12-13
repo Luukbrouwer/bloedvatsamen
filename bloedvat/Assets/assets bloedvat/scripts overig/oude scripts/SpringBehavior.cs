@@ -1,3 +1,10 @@
+//==================================
+//dit script niet gebruiken, gebruik newSpringBeh
+//==================================
+
+
+
+
 using UnityEngine;
 using System.Collections.Generic;
 
@@ -11,7 +18,9 @@ public class SpringBehavior : MonoBehaviour
 
 
     //public Vector3[,] beginLenght = new Vector3[self, Connected];
-    //public Vector3<Rigidbody> L = new Vector3<Rigidbody>();
+    //public Vector3<Rigidbody> L = new Vector3<Rigidbody>();z
+
+    
     private Dictionary<Rigidbody, Vector3> lengte = new Dictionary<Rigidbody, Vector3>();
 
 

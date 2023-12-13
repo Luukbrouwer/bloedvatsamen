@@ -5,46 +5,17 @@ public class SpringBehaviornew : MonoBehaviour
 {
     public float springConstant = 100.0f;
     public float restLength = 1.0f; // dit is de veer lengte in rust
-    public float damping = 0.5f;
+    //public float damping = 0.5f;
 
+    
+    //connectedObjects word in dit script gebruikt, maar in het script spawner worden de objecten in deze lijst gezet:
     public List<Rigidbody> connectedObjects = new List<Rigidbody>(); // een rigidbody lijst omdat je een kracht wil kunnen toevoegen
 
-    [HideInInspector]
-    public float forceMagnitude; // Voeg een variabele toe om de kracht op te slaan
 
-   /* public void CalculateForce()
+    
+    void CalculateSpringForce()
     {
-        foreach (Rigidbody connectedObject in connectedObjects)
-        {
-            if (connectedObject == null)
-            {
-                Debug.LogWarning("Connected object not assigned in SpringBehavior.");
-                continue;
-            }
-
-            // Calculate displacement from rest length
-            Vector3 displacement = connectedObject.transform.position - transform.position;
-            float distance = displacement.magnitude;
-
-            // Calculate the spring force using Hooke's law
-            float forceMagnitude = -springConstant * (distance - restLength) - damping * Vector3.Dot(displacement.normalized, connectedObject.velocity);
-
-            Debug.Log("Force between " + gameObject.name + " and " + connectedObject.gameObject.name + ": " + forceMagnitude);
-
-            // Apply spring force to the current object's rigidbody
-            Rigidbody rb = GetComponent<Rigidbody>();
-            rb.AddForce(displacement.normalized * forceMagnitude);
-        }
-
-        // Bereken en sla de kracht op
-        forceMagnitude = Mathf.Abs(forceMagnitude);
-
-        Debug.Log("Force on cube: " + forceMagnitude);
-    } */
-
-    void FixedUpdate()
-    {
-        foreach (Rigidbody connectedObject in connectedObjects)
+       foreach (Rigidbody connectedObject in connectedObjects)
         {
             if (connectedObject == null)
             {
@@ -60,11 +31,17 @@ public class SpringBehaviornew : MonoBehaviour
             // Calculate displacement from rest length
             Vector3 displacement = connectedObject.transform.position - transform.position;// buurplaats-eigenplaats= afstant tussen objecten
             float distance = displacement.magnitude; //grootte van de afstant tussen objecten
-            float forceMagnitude = -springConstant * (distance - restLength) - damping * Vector3.Dot(displacement.normalized, connectedObject.velocity);//pas formules toe
+            //denk dat er iets mis gaat in de demping dus heb dit er voor nu even uitgehaald
+            float forceMagnitude = -springConstant * (distance - restLength) ;//- damping * Vector3.Dot(displacement.normalized, connectedObject.velocity);//pas formules toe
             
             // Apply spring force
-            Rigidbody rb = GetComponent<Rigidbody>();
-            rb.AddForce(displacement.normalized * forceMagnitude);
-        }
+            Rigidbody currentRB = GetComponent<Rigidbody>();
+            currentRB.AddForce(displacement.normalized * forceMagnitude);
+        } 
+    } 
+
+    void FixedUpdate()
+    {
+        CalculateSpringForce();
     }
 }

@@ -14,8 +14,6 @@ GameObject:
   - component: {fileID: -3306648255419749489}
   - component: {fileID: 6600593147467029591}
   - component: {fileID: -6442175548764416217}
-  - component: {fileID: -6589956891530854484}
-  - component: {fileID: 4896710656708741995}
   m_Layer: 0
   m_Name: prefab bloedvatgrid
   m_TagString: Untagged
@@ -150,38 +148,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   springConstant: 5
   restLength: 0.3
-  damping: 0
-  connectedObjects: []
-  forceMagnitude: 0
---- !u!114 &-6589956891530854484
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8210342646888689912}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d84fe459c4e0a154d8841c423cc6d160, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  springConstant: 10
-  restLength: 0.3
-  damping: 0
-  connectedObjects: []
---- !u!114 &4896710656708741995
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8210342646888689912}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1cd309e6e0585c84295616dd1281d614, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  springConstant: 0.5
-  restLength: 0.3
-  damping: 0
   connectedObjects: []
