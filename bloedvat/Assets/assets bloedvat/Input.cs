@@ -1,6 +1,5 @@
 //=========================================
 //dit is het script voor de input
-//op dit moment is dat spatiebalk die een kracht toevoegd aan de guidewire
 //=========================================
 
 
@@ -18,7 +17,7 @@ using System.IO.Ports;
 public class Movement : MonoBehaviour
 {
     //start arduino connection:
-    SerialPort data_stream =new SerialPort("COM4" , 115200);
+    SerialPort data_stream =new SerialPort("COM3" , 115200);
     public string receivedstring;
     public Rigidbody rb;
     public string[] datas;
