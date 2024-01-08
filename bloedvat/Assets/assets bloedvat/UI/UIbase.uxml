@@ -1,0 +1,11 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/BaseUI.uss?fileID=7433441132597879392&amp;guid=2ec12bbe2112d9444aa45149c77e8d73&amp;type=3#BaseUI" />
+    <ui:GroupBox name="GroupBox" style="background-color: rgba(255, 255, 255, 0); border-top-width: 5px; border-right-width: 5px; border-bottom-width: 5px; border-left-width: 5px; border-left-color: rgba(0, 0, 0, 0); border-right-color: rgba(0, 0, 0, 0); border-top-color: rgba(0, 0, 0, 0); border-bottom-color: rgba(0, 0, 0, 0); border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0; justify-content: flex-start; width: auto; height: auto; max-width: none;">
+        <ui:Label tabindex="-1" text="Cathbeter" parse-escape-sequences="true" display-tooltip-when-elided="true" style="font-size: 50px; -unity-text-align: upper-center; height: 50px; -unity-font-style: bold;" />
+        <ui:Label tabindex="-1" text="Guide your way!" parse-escape-sequences="true" display-tooltip-when-elided="true" style="-unity-text-align: upper-center; font-size: 25px; height: 50px; -unity-font-style: italic;" />
+        <ui:Button text="Start!" parse-escape-sequences="true" display-tooltip-when-elided="true" name="TestButton" style="font-size: 25px;" />
+        <ui:FloatField label="Current pressure " value="0" name="CurrentPressureValue" style="font-size: 25px;" />
+        <ui:FloatField label="Maximal pressure" value="0" name="MaximalPressureValue" style="font-size: 25px;" />
+        <ui:Label tabindex="-1" text="Relative pressure: 0%" parse-escape-sequences="true" display-tooltip-when-elided="true" name="RelativePressureLabel" style="align-self: center; font-size: 25px; padding-top: 40px;" />
+    </ui:GroupBox>
+</ui:UXML>
