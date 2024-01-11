@@ -64,6 +64,7 @@ public class InputStrainInfo : MonoBehaviour
     FloatField uiFloFieldCur;
     FloatField uiFloFieldMax;
     Label uiLabel;
+    ProgressBar uiDistancePB;
 
     public UnityEngine.UI.Image horzProgressBar;
     public UnityEngine.UI.Image[] healthBarPoints;
@@ -112,6 +113,8 @@ public class InputStrainInfo : MonoBehaviour
             Debug.Log("Label NOT found"); //Checks if label is found
         }
 
+        uiDistancePB = StrainInfoDocument.rootVisualElement.Q("DistanceProgressbar") as ProgressBar;
+
         uiButton.RegisterCallback<ClickEvent>(OnButtonClick);
     }
 
@@ -135,20 +138,21 @@ public class InputStrainInfo : MonoBehaviour
 
     public void OnButtonClick(ClickEvent evt)
     {
-        //InvokeRepeating("UpdateValues", 0, TimeStep);    //Calls function UpdateProgressValue every TimeStep seconds
+        InvokeRepeating("UpdateValues", 0, TimeStep);    //Calls function UpdateProgressValue every TimeStep seconds
         uiButton.text = "Running...";
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (uiButton.text == "Running...")
+/*        if (uiButton.text == "Running...")
         {
             UpdateValues();
-        }
+        }*/
     }
 
     private int progressValue = 0;    //Initialize start value of progressbar
+    private int distance = 0;
     private float CurrentPressure = 0.00f;
     private float MaximalPressure = 0.00f;
     private float RelativePressure = 0.00f;
@@ -156,7 +160,6 @@ public class InputStrainInfo : MonoBehaviour
     private float g = 0.0f;
     private float b = 0.0f;
     private float a = 1.0f;
-    private float lerpSpeed;
 
     void UpdateValues()
     {
@@ -164,6 +167,7 @@ public class InputStrainInfo : MonoBehaviour
 
         if (progressValue < duration)
         {
+            distance = myTimePath.positioncoordinates[progressValue].PosX;
             CurrentPressure = myTimePath.positioncoordinates[progressValue].curPressure;
             MaximalPressure = myTimePath.positioncoordinates[progressValue].maxPressure;
             RelativePressure = CurrentPressure / MaximalPressure * 100;
@@ -172,6 +176,8 @@ public class InputStrainInfo : MonoBehaviour
             uiFloFieldMax.value = MaximalPressure;    //Writes value from Excel file to float field
 
             uiLabel.text = "Relative pressure: " + Convert.ToInt32(RelativePressure).ToString() + "%";
+            
+            uiDistancePB.value = distance;
 
             //Checks if the relative pressure is smaller than or equal to 50 to be able to visualize in the progressbar with color
             //(from green to yellow/orange)

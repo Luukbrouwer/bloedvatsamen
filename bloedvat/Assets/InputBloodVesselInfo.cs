@@ -5,13 +5,17 @@ using UnityEngine.UIElements;
 using System;
 using UnityEngine.UI;
 using Unity.VisualScripting;
+using System.Reflection.Emit;
 
 public class InputBloodVesselInfo : MonoBehaviour
 {
     UIDocument StrainInfoDocument;
+    UnityEngine.UIElements.Label uiDistanceText;
+    ProgressBar uiDistancePB;
     GroupBox uiGroupBox;
     UnityEngine.UIElements.Button uiButton;
-    Label uiScanText;
+    UnityEngine.UIElements.Label uiLabel;
+    UnityEngine.UIElements.Label uiScanText;
     FloatField uiLengthBV;
     FloatField uiLocationVC;
     DropdownField uiDropdownField;
@@ -35,7 +39,7 @@ public class InputBloodVesselInfo : MonoBehaviour
             Debug.Log("Button NOT found"); //Checks if button is found
         }
 
-        uiScanText = StrainInfoDocument.rootVisualElement.Q("ScanText") as Label;
+        uiScanText = StrainInfoDocument.rootVisualElement.Q("ScanText") as UnityEngine.UIElements.Label;
 
         if (uiScanText == null)
         {
@@ -70,6 +74,10 @@ public class InputBloodVesselInfo : MonoBehaviour
             Debug.Log("Dropdown menu NOT found"); //Checks if dropdown menu is found
         }
 
+        uiLabel = StrainInfoDocument.rootVisualElement.Q("RelativePressureLabel") as UnityEngine.UIElements.Label;
+        uiDistanceText = StrainInfoDocument.rootVisualElement.Q("DistanceText") as UnityEngine.UIElements.Label;
+        uiDistancePB = StrainInfoDocument.rootVisualElement.Q("DistanceProgressbar") as ProgressBar;
+
         //uiButton.RegisterCallback<ClickEvent>(OnButtonClick);
     }
 
@@ -78,41 +86,67 @@ public class InputBloodVesselInfo : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        uiLabel.visible = false;
         uiButton.visible = false;
         progressBar.enabled = false;
         progressBarBackground.enabled = false;
+        uiDistanceText.visible = false;
+        uiDistancePB.visible = false;
     }
+
+    private float BVlength;
+    private float VClocation;
+    private string BVtype;
+    private float GWlength;
+    private bool infoReady = false;
 
     // Update is called once per frame
     void Update()
     {
-        if (uiLocationVC.value > uiLengthBV.value)
+        BVlength = uiLengthBV.value;
+        VClocation = uiLocationVC.value;
+        BVtype = uiDropdownField.value;
+        
+        if (VClocation > BVlength || VClocation == 0)
         {
             uiScanText.text = "Location vasoconstriction outside of blood vessel";
+            uiButton.visible = false;
         }
 
-        if (uiLocationVC.value <= uiLengthBV.value)
+        if (VClocation <= BVlength)
         {
             uiScanText.text = "";
         }
 
-        if (uiLocationVC.value <= uiLengthBV.value & uiDropdownField.value != null & uiLengthBV.value != 0 & uiLocationVC.value != 0)
+        if (VClocation <= BVlength & BVtype != null & BVlength != 0 & VClocation != 0)
         {
             uiButton.visible = true;
         }
 
-        if (uiButton.text == "Running...")
+        if (uiButton.text == "Running..." & infoReady == false)
         {
             OnButtonClick();
+            DistanceProgressBar();
+            infoReady = true;
         }
     }
 
     public void OnButtonClick()
     {
-        uiDropdownField.visible = false;
-        uiLengthBV.visible = false;
-        uiLocationVC.visible = false;
+        uiGroupBox.visible = false;
+        uiLabel.visible = true;
+        progressBar.transform.position = uiLabel.worldTransform.GetPosition() + new Vector3(-27, -84, 0);
+        progressBarBackground.transform.position = uiLabel.worldTransform.GetPosition() + new Vector3(-25, -88, 0);
         progressBar.enabled = true;
         progressBarBackground.enabled = true;
+    }
+
+    public void DistanceProgressBar()
+    {
+        uiDistanceText.visible = true;
+        uiDistancePB.visible = true;
+        uiDistancePB.highValue = VClocation;
+
+        //uiDistancePB.value = GWlength;
     }
 }

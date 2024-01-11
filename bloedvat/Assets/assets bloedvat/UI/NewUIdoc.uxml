@@ -5,9 +5,11 @@
         <ui:Button text="Start!" parse-escape-sequences="true" display-tooltip-when-elided="true" name="TestButton" style="font-size: 25px;" />
         <ui:FloatField label="Current pressure " value="0" name="CurrentPressureValue" style="font-size: 25px;" />
         <ui:FloatField label="Maximal pressure" value="0" name="MaximalPressureValue" style="font-size: 25px;" />
-        <ui:Label tabindex="-1" text="Relative pressure: 0%" parse-escape-sequences="true" display-tooltip-when-elided="true" name="RelativePressureLabel" style="align-self: center; font-size: 25px; padding-top: 20px;" />
+        <ui:Label tabindex="-1" text="Relative pressure: 0%" parse-escape-sequences="true" display-tooltip-when-elided="true" name="RelativePressureLabel" style="align-self: center; font-size: 25px; padding-top: 20px; padding-bottom: 90px;" />
+        <ui:Label tabindex="-1" text="Distance to vasoconstriction" parse-escape-sequences="true" display-tooltip-when-elided="true" name="DistanceText" style="font-size: 25px; -unity-text-align: upper-center;" />
+        <ui:ProgressBar value="0" name="DistanceProgressbar" />
     </ui:GroupBox>
-    <ui:GroupBox name="InfoScan" style="padding-top: 5px; padding-bottom: 5px;">
+    <ui:GroupBox name="InfoScan" style="padding-top: 5px; padding-bottom: 5px; margin-top: -90px;">
         <ui:Label tabindex="-1" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ScanText" style="font-size: 25px; -unity-text-align: upper-center;" />
         <ui:DropdownField label="Type of blood vessel        " index="-1" choices="Aorta, Coronary artery, Femoral artery" name="DropdownField" style="font-size: 25px;" />
         <ui:FloatField label="Length blood vessel         " value="0" name="LengthBloodVessel" style="font-size: 25px;" />
