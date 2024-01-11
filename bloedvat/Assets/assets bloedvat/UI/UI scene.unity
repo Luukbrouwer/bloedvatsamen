@@ -285,6 +285,7 @@ GameObject:
   - component: {fileID: 272984039}
   - component: {fileID: 272984038}
   - component: {fileID: 272984040}
+  - component: {fileID: 272984041}
   m_Layer: 5
   m_Name: MainUI
   m_TagString: Untagged
@@ -370,6 +371,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   progressBar: {fileID: 728853464}
   progressBarBackground: {fileID: 1908545008}
+  script: {fileID: 272984041}
+--- !u!114 &272984041
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 272984035}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ccbd4577deb7a64998ee4eb8d6c4ff4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  receivedstring: 
+  rb: {fileID: 0}
+  datas: []
+  ForceApplied: -20
 --- !u!1 &418514871
 GameObject:
   m_ObjectHideFlags: 0

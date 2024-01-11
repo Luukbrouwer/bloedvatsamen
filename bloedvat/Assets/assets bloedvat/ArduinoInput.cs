@@ -4,7 +4,6 @@
 
 
 
-
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,9 +11,7 @@ using System.IO.Ports;
 
 
 
-
-
-public class Movement : MonoBehaviour
+public class ArduinoInput : MonoBehaviour
 {
     //start arduino connection:
     SerialPort data_stream =new SerialPort("COM3" , 115200);
@@ -62,12 +59,3 @@ public class Movement : MonoBehaviour
        data_stream.Close(); 
     }
 }
-
-
-    
-
-    
-
-
-
-

@@ -82,13 +82,11 @@ public class InputBloodVesselInfo : MonoBehaviour
         //uiButton.RegisterCallback<ClickEvent>(OnButtonClick);
     }
 
-    public GameObject data;
-    private Input inputScript;
+    public ArduinoInput script;
 
     // Start is called before the first frame update
     void Start()
     {
-        inputScript = data.GetComponent<Input>();
         uiLabel.visible = false;
         uiButton.visible = false;
         progressBar.enabled = false;
@@ -100,7 +98,7 @@ public class InputBloodVesselInfo : MonoBehaviour
     private float BVlength;         //Total blood vessel length
     private float VClocation;       //Vasoconstriction location within blood vessel
     private string BVtype;          //Blood vessel type
-    private float GWlength;         //Guidewire length in blood vessel
+    private string[] GWlength;         //Guidewire length in blood vessel
     private bool infoReady = false; //Bool whether all info has been entered in the fields
 
     // Update is called once per frame
@@ -158,11 +156,11 @@ public class InputBloodVesselInfo : MonoBehaviour
 
     public void UpdateDistanceProgressBar()
     {
-        if (inputScript == null)
+        if (script == null)
         {
             Debug.Log("Script not referenced in the right way");
         }
 
-        //GWlength = inputScript.datas;
+        GWlength = script.datas;
     }
 }
