@@ -77,7 +77,7 @@ public class InputStrainInfo : MonoBehaviour
             Debug.LogError("No button document found"); //Checks if UI document is found
         }
 
-        uiGroupBox = StrainInfoDocument.rootVisualElement.Q("GroupBox") as GroupBox;
+        uiGroupBox = StrainInfoDocument.rootVisualElement.Q("InfoSurgeon") as GroupBox;
 
         if (uiGroupBox == null)
         {
