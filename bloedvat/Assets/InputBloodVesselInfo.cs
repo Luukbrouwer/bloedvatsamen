@@ -6,6 +6,7 @@ using System;
 using UnityEngine.UI;
 using Unity.VisualScripting;
 using System.Reflection.Emit;
+using System.Security.Cryptography.X509Certificates;
 
 public class InputBloodVesselInfo : MonoBehaviour
 {
@@ -81,11 +82,13 @@ public class InputBloodVesselInfo : MonoBehaviour
         //uiButton.RegisterCallback<ClickEvent>(OnButtonClick);
     }
 
-
+    public GameObject data;
+    private Input inputScript;
 
     // Start is called before the first frame update
     void Start()
     {
+        inputScript = data.GetComponent<Input>();
         uiLabel.visible = false;
         uiButton.visible = false;
         progressBar.enabled = false;
@@ -94,11 +97,11 @@ public class InputBloodVesselInfo : MonoBehaviour
         uiDistancePB.visible = false;
     }
 
-    private float BVlength;
-    private float VClocation;
-    private string BVtype;
-    private float GWlength;
-    private bool infoReady = false;
+    private float BVlength;         //Total blood vessel length
+    private float VClocation;       //Vasoconstriction location within blood vessel
+    private string BVtype;          //Blood vessel type
+    private float GWlength;         //Guidewire length in blood vessel
+    private bool infoReady = false; //Bool whether all info has been entered in the fields
 
     // Update is called once per frame
     void Update()
@@ -126,8 +129,13 @@ public class InputBloodVesselInfo : MonoBehaviour
         if (uiButton.text == "Running..." & infoReady == false)
         {
             OnButtonClick();
-            DistanceProgressBar();
+            SetUpDistanceProgressBar();
             infoReady = true;
+        }
+
+        if (infoReady == true) //When the start button has been clicked
+        {
+            UpdateDistanceProgressBar();
         }
     }
 
@@ -135,18 +143,26 @@ public class InputBloodVesselInfo : MonoBehaviour
     {
         uiGroupBox.visible = false;
         uiLabel.visible = true;
-        progressBar.transform.position = uiLabel.worldTransform.GetPosition() + new Vector3(-27, -84, 0);
-        progressBarBackground.transform.position = uiLabel.worldTransform.GetPosition() + new Vector3(-25, -88, 0);
+        //progressBar.transform.position = uiLabel.worldTransform.GetPosition() + new Vector3(-27, -84, 0);
+        //progressBarBackground.transform.position = uiLabel.worldTransform.GetPosition() + new Vector3(-25, -88, 0);
         progressBar.enabled = true;
         progressBarBackground.enabled = true;
     }
 
-    public void DistanceProgressBar()
+    public void SetUpDistanceProgressBar()
     {
         uiDistanceText.visible = true;
         uiDistancePB.visible = true;
         uiDistancePB.highValue = VClocation;
+    }
 
-        //uiDistancePB.value = GWlength;
+    public void UpdateDistanceProgressBar()
+    {
+        if (inputScript == null)
+        {
+            Debug.Log("Script not referenced in the right way");
+        }
+
+        //GWlength = inputScript.datas;
     }
 }

@@ -45,8 +45,7 @@ public class Movement : MonoBehaviour
 
         string[] datas = receivedstring.Split(";"); //split data tussen ';'
         float length= float.Parse(datas[0]) *0.00001f;
-        transform.position= new Vector3 (beginGuwi[0], beginGuwi[1]-length, beginGuwi[2]); 
-        
+        transform.position = new Vector3(beginGuwi[0], beginGuwi[1] - length, beginGuwi[2]);
     }
 
 
@@ -56,16 +55,12 @@ public class Movement : MonoBehaviour
         {
             rb.AddForce(0, -ForceApplied * Time.deltaTime, 0);
         }
-
-       
-
     }
 
     void OnApplicationQuit()
     {
        data_stream.Close(); 
     }
-
 }
 
 
