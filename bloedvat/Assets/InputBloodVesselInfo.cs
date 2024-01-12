@@ -11,12 +11,14 @@ using System.Security.Cryptography.X509Certificates;
 public class InputBloodVesselInfo : MonoBehaviour
 {
     UIDocument StrainInfoDocument;
+    GroupBox uiInfoSurgeon;
     UnityEngine.UIElements.Label uiDistanceText;
     ProgressBar uiDistancePB;
     GroupBox uiGroupBox;
     UnityEngine.UIElements.Button uiButton;
     UnityEngine.UIElements.Label uiLabel;
     UnityEngine.UIElements.Label uiScanText;
+    UnityEngine.UIElements.Label uiScanWarning;
     FloatField uiLengthBV;
     FloatField uiLocationVC;
     DropdownField uiDropdownField;
@@ -33,6 +35,13 @@ public class InputBloodVesselInfo : MonoBehaviour
             Debug.LogError("No button document found"); //Checks if UI document is found
         }
 
+        uiInfoSurgeon = StrainInfoDocument.rootVisualElement.Q("InfoSurgeon") as GroupBox;
+
+        if (uiInfoSurgeon == null)
+        {
+            Debug.Log("Group box NOT found"); //Checks if group box is found
+        }
+
         uiButton = StrainInfoDocument.rootVisualElement.Q("TestButton") as UnityEngine.UIElements.Button;
 
         if (uiButton == null)
@@ -45,6 +54,13 @@ public class InputBloodVesselInfo : MonoBehaviour
         if (uiScanText == null)
         {
             Debug.Log("Scan text NOT found"); //Checks if scan text is found
+        }
+
+        uiScanWarning = StrainInfoDocument.rootVisualElement.Q("ScanWarning") as UnityEngine.UIElements.Label;
+
+        if (uiScanWarning == null)
+        {
+            Debug.Log("Scan text NOT found"); //Checks if scan warning is found
         }
 
         uiGroupBox = StrainInfoDocument.rootVisualElement.Q("InfoScan") as GroupBox;
@@ -87,6 +103,7 @@ public class InputBloodVesselInfo : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        uiInfoSurgeon.visible = false;
         uiLabel.visible = false;
         uiButton.visible = false;
         progressBar.enabled = false;
