@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using System;
 using UnityEngine.UI;
+using static UnityEditor.FilePathAttribute;
 
 public class InputStrainInfo : MonoBehaviour
 {
@@ -65,6 +66,7 @@ public class InputStrainInfo : MonoBehaviour
     FloatField uiFloFieldMax;
     Label uiLabel;
     ProgressBar uiDistancePB;
+    Label uiScanWarning;
 
     public UnityEngine.UI.Image horzProgressBar;
     public UnityEngine.UI.Image[] healthBarPoints;
@@ -113,6 +115,13 @@ public class InputStrainInfo : MonoBehaviour
             Debug.Log("Label NOT found"); //Checks if label is found
         }
 
+        uiScanWarning = StrainInfoDocument.rootVisualElement.Q("ScanWarning") as UnityEngine.UIElements.Label;
+
+        if (uiScanWarning == null)
+        {
+            Debug.Log("Scan text NOT found"); //Checks if scan warning is found
+        }
+
         uiDistancePB = StrainInfoDocument.rootVisualElement.Q("DistanceProgressbar") as ProgressBar;
 
         uiButton.RegisterCallback<ClickEvent>(OnButtonClick);
@@ -135,11 +144,24 @@ public class InputStrainInfo : MonoBehaviour
     }
 
     public float TimeStep = 1.00f;  //Time step with which the data is being gathered
+    public InputBloodVesselInfo script;
+
+    public float BVlength;
+    public float VClocation;
+    public string BVtype;
 
     public void OnButtonClick(ClickEvent evt)
     {
-        InvokeRepeating("UpdateValues", 0, TimeStep);    //Calls function UpdateProgressValue every TimeStep seconds
-        uiButton.text = "Running...";
+        if (script.BVlength == 0 || script.VClocation == 0 || script.VClocation > script.BVlength || script.BVtype == null)
+        {
+            script.uiScanWarning.text = "Not all fields have been corretly filled in";
+        }
+
+        else
+        {
+            InvokeRepeating("UpdateValues", 0, TimeStep);    //Calls function UpdateProgressValue every TimeStep seconds
+            uiButton.text = "Running...";
+        }
     }
 
     // Update is called once per frame

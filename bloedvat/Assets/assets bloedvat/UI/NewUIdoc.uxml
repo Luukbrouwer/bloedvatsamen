@@ -8,12 +8,12 @@
         <ui:Label tabindex="-1" text="Distance to vasoconstriction" parse-escape-sequences="true" display-tooltip-when-elided="true" name="DistanceText" style="font-size: 25px; -unity-text-align: upper-center;" />
         <ui:ProgressBar value="0" name="DistanceProgressbar" />
     </ui:GroupBox>
-    <ui:GroupBox name="InfoScan" style="padding-top: 5px; padding-bottom: 5px; margin-top: -410px;">
-        <ui:Button text="Start!" parse-escape-sequences="true" display-tooltip-when-elided="true" name="TestButton" style="font-size: 25px;" />
-        <ui:Label tabindex="-1" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ScanText" text="Enter following data fields" style="font-size: 25px; -unity-text-align: upper-center;" />
+    <ui:GroupBox name="InfoScan" style="padding-top: 5px; padding-bottom: 5px; margin-top: -250px;">
+        <ui:Label tabindex="-1" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ScanText" text="Enter the data fields below" style="font-size: 25px; -unity-text-align: upper-center; margin-bottom: 8px; -unity-font-style: bold;" />
         <ui:DropdownField label="Type of blood vessel        " index="-1" choices="Aorta, Coronary artery, Femoral artery" name="DropdownField" style="font-size: 25px;" />
         <ui:FloatField label="Length blood vessel         " value="0" name="LengthBloodVessel" style="font-size: 25px;" />
         <ui:FloatField label="Location vasoconstriction" value="0" name="LocationVasoconstriction" style="font-size: 25px;" />
         <ui:Label tabindex="-1" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ScanWarning" style="font-size: 25px; -unity-text-align: upper-center;" />
+        <ui:Button text="Start!" parse-escape-sequences="true" display-tooltip-when-elided="true" name="TestButton" style="font-size: 25px; margin-top: 20px;" />
     </ui:GroupBox>
 </ui:UXML>

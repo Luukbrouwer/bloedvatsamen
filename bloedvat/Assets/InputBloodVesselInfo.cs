@@ -17,11 +17,11 @@ public class InputBloodVesselInfo : MonoBehaviour
     GroupBox uiGroupBox;
     UnityEngine.UIElements.Button uiButton;
     UnityEngine.UIElements.Label uiLabel;
-    UnityEngine.UIElements.Label uiScanText;
-    UnityEngine.UIElements.Label uiScanWarning;
-    FloatField uiLengthBV;
-    FloatField uiLocationVC;
-    DropdownField uiDropdownField;
+    public UnityEngine.UIElements.Label uiScanText;
+    public UnityEngine.UIElements.Label uiScanWarning;
+    public FloatField uiLengthBV;
+    public FloatField uiLocationVC;
+    public DropdownField uiDropdownField;
 
     public UnityEngine.UI.Image progressBar;
     public UnityEngine.UI.Image progressBarBackground;
@@ -104,18 +104,18 @@ public class InputBloodVesselInfo : MonoBehaviour
     void Start()
     {
         uiInfoSurgeon.visible = false;
-        uiLabel.visible = false;
-        uiButton.visible = false;
+        //uiLabel.visible = false;
+        //uiButton.visible = false;
         progressBar.enabled = false;
         progressBarBackground.enabled = false;
-        uiDistanceText.visible = false;
-        uiDistancePB.visible = false;
+        //uiDistanceText.visible = false;
+        //uiDistancePB.visible = false;
     }
 
-    private float BVlength;         //Total blood vessel length
-    private float VClocation;       //Vasoconstriction location within blood vessel
-    private string BVtype;          //Blood vessel type
-    private string[] GWlength;         //Guidewire length in blood vessel
+    public float BVlength;         //Total blood vessel length
+    public float VClocation;       //Vasoconstriction location within blood vessel
+    public string BVtype;          //Blood vessel type
+    private string[] GWlength;      //Guidewire length in blood vessel
     private bool infoReady = false; //Bool whether all info has been entered in the fields
 
     // Update is called once per frame
@@ -127,19 +127,19 @@ public class InputBloodVesselInfo : MonoBehaviour
         
         if (VClocation > BVlength || VClocation == 0)
         {
-            uiScanText.text = "Location vasoconstriction outside of blood vessel";
-            uiButton.visible = false;
+            uiScanWarning.text = "Location vasoconstriction outside of blood vessel";
+            uiScanWarning.style.color = Color.red;
         }
 
         if (VClocation <= BVlength)
         {
-            uiScanText.text = "";
+            uiScanWarning.text = "";
         }
 
-        if (VClocation <= BVlength & BVtype != null & BVlength != 0 & VClocation != 0)
+/*        if (VClocation <= BVlength & BVtype != null & BVlength != 0 & VClocation != 0)
         {
             uiButton.visible = true;
-        }
+        }*/
 
         if (uiButton.text == "Running..." & infoReady == false)
         {
