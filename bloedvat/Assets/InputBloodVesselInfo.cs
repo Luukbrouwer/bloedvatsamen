@@ -42,7 +42,7 @@ public class InputBloodVesselInfo : MonoBehaviour
             Debug.Log("Group box NOT found"); //Checks if group box is found
         }
 
-        uiButton = StrainInfoDocument.rootVisualElement.Q("TestButton") as UnityEngine.UIElements.Button;
+        uiButton = StrainInfoDocument.rootVisualElement.Q("NextButton") as UnityEngine.UIElements.Button;
 
         if (uiButton == null)
         {
@@ -95,28 +95,20 @@ public class InputBloodVesselInfo : MonoBehaviour
         uiDistanceText = StrainInfoDocument.rootVisualElement.Q("DistanceText") as UnityEngine.UIElements.Label;
         uiDistancePB = StrainInfoDocument.rootVisualElement.Q("DistanceProgressbar") as ProgressBar;
 
-        //uiButton.RegisterCallback<ClickEvent>(OnButtonClick);
+        uiButton.RegisterCallback<ClickEvent>(OnButtonClick);
     }
-
-    public ArduinoInput script;
 
     // Start is called before the first frame update
     void Start()
     {
         uiInfoSurgeon.visible = false;
-        //uiLabel.visible = false;
-        //uiButton.visible = false;
         progressBar.enabled = false;
         progressBarBackground.enabled = false;
-        //uiDistanceText.visible = false;
-        //uiDistancePB.visible = false;
     }
 
     public float BVlength;         //Total blood vessel length
     public float VClocation;       //Vasoconstriction location within blood vessel
     public string BVtype;          //Blood vessel type
-    private string[] GWlength;      //Guidewire length in blood vessel
-    private bool infoReady = false; //Bool whether all info has been entered in the fields
 
     // Update is called once per frame
     void Update()
@@ -125,59 +117,46 @@ public class InputBloodVesselInfo : MonoBehaviour
         VClocation = uiLocationVC.value;
         BVtype = uiDropdownField.value;
         
-        if (VClocation > BVlength || VClocation == 0)
+        if (VClocation > BVlength)
         {
             uiScanWarning.text = "Location vasoconstriction outside of blood vessel";
             uiScanWarning.style.color = Color.red;
         }
 
-        if (VClocation <= BVlength)
+        if (VClocation <= BVlength & uiScanWarning.text == "Location vasoconstriction outside of blood vessel")
         {
             uiScanWarning.text = "";
         }
 
-/*        if (VClocation <= BVlength & BVtype != null & BVlength != 0 & VClocation != 0)
+        if (BVlength != 0 & VClocation != 0 & BVtype != null & BVlength >= VClocation)
         {
-            uiButton.visible = true;
-        }*/
-
-        if (uiButton.text == "Running..." & infoReady == false)
-        {
-            OnButtonClick();
-            SetUpDistanceProgressBar();
-            infoReady = true;
-        }
-
-        if (infoReady == true) //When the start button has been clicked
-        {
-            UpdateDistanceProgressBar();
+            uiButton.text = "Next!";
+            uiButton.style.color = Color.black;
         }
     }
 
-    public void OnButtonClick()
-    {
-        uiGroupBox.visible = false;
-        uiLabel.visible = true;
-        //progressBar.transform.position = uiLabel.worldTransform.GetPosition() + new Vector3(-27, -84, 0);
-        //progressBarBackground.transform.position = uiLabel.worldTransform.GetPosition() + new Vector3(-25, -88, 0);
-        progressBar.enabled = true;
-        progressBarBackground.enabled = true;
-    }
+    public ArduinoInput ArduinoScript;
+    public InputStrainInfo StrainScript;
 
-    public void SetUpDistanceProgressBar()
+    public void OnButtonClick(ClickEvent evt)
     {
-        uiDistanceText.visible = true;
-        uiDistancePB.visible = true;
-        uiDistancePB.highValue = VClocation;
-    }
-
-    public void UpdateDistanceProgressBar()
-    {
-        if (script == null)
+        if (BVlength == 0 || VClocation == 0 || VClocation > BVlength || BVtype == null)
         {
-            Debug.Log("Script not referenced in the right way");
+/*            uiScanWarning.text = "Not all fields have been corretly filled in";
+            uiScanWarning.style.color = Color.red;*/
+            uiButton.text = "Not all fields have been correctly filled in.";
+            uiButton.style.color = Color.red;
         }
 
-        GWlength = script.datas;
+        else
+        {
+            uiGroupBox.visible = false;
+            StrainScript.uiGroupBox.visible = true;
+
+            //progressBar.transform.position = uiLabel.worldTransform.GetPosition() + new Vector3(-27, -84, 0);
+            //progressBarBackground.transform.position = uiLabel.worldTransform.GetPosition() + new Vector3(-25, -88, 0);
+            progressBar.enabled = true;
+            progressBarBackground.enabled = true;
+        }
     }
 }

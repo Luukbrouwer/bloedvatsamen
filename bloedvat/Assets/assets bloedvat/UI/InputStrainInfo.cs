@@ -60,7 +60,7 @@ public class InputStrainInfo : MonoBehaviour
     /////////////////////////////////DONE READING EXCEL FILE//////////////////////////////////////////
 
     UIDocument StrainInfoDocument;
-    GroupBox uiGroupBox;
+    public GroupBox uiGroupBox;
     UnityEngine.UIElements.Button uiButton;
     FloatField uiFloFieldCur;
     FloatField uiFloFieldMax;
@@ -101,7 +101,7 @@ public class InputStrainInfo : MonoBehaviour
             Debug.Log("Maximal pressure float field NOT found"); //Checks if maximal pressure float field is found
         }
 
-        uiButton = StrainInfoDocument.rootVisualElement.Q("TestButton") as UnityEngine.UIElements.Button;
+        uiButton = StrainInfoDocument.rootVisualElement.Q("StartButton") as UnityEngine.UIElements.Button;
 
         if (uiButton == null)
         {
@@ -115,7 +115,7 @@ public class InputStrainInfo : MonoBehaviour
             Debug.Log("Label NOT found"); //Checks if label is found
         }
 
-        uiScanWarning = StrainInfoDocument.rootVisualElement.Q("ScanWarning") as UnityEngine.UIElements.Label;
+        uiScanWarning = StrainInfoDocument.rootVisualElement.Q("ScanWarning") as Label;
 
         if (uiScanWarning == null)
         {
@@ -144,40 +144,48 @@ public class InputStrainInfo : MonoBehaviour
     }
 
     public float TimeStep = 1.00f;  //Time step with which the data is being gathered
-    public InputBloodVesselInfo script;
+    public ArduinoInput ArduinoScript;
+    public InputBloodVesselInfo BVscript;
 
-    public float BVlength;
-    public float VClocation;
-    public string BVtype;
+    private bool running = false;
 
     public void OnButtonClick(ClickEvent evt)
     {
-        if (script.BVlength == 0 || script.VClocation == 0 || script.VClocation > script.BVlength || script.BVtype == null)
+        if (running == false)
         {
-            script.uiScanWarning.text = "Not all fields have been corretly filled in";
-        }
-
-        else
-        {
-            InvokeRepeating("UpdateValues", 0, TimeStep);    //Calls function UpdateProgressValue every TimeStep seconds
+            //InvokeRepeating("UpdateValues", 0, TimeStep);    //Calls function UpdateProgressValue every TimeStep seconds
             uiButton.text = "Running...";
         }
-    }
 
+        if (running == true)
+        {
+            Application.Quit();
+            Debug.Log("Quit");
+        }
+    }
+    
     // Update is called once per frame
     void Update()
     {
-/*        if (uiButton.text == "Running...")
+        if (uiGroupBox.visible == true)
         {
+            uiDistancePB.highValue = BVscript.uiLocationVC.value;
+        }
+
+        if (uiButton.text == "Running...")
+        {
+            Debug.Log("Running");
             UpdateValues();
-        }*/
+            running = true;
+        }
     }
 
     private int progressValue = 0;    //Initialize start value of progressbar
     private int distance = 0;
-    private float CurrentPressure = 0.00f;
+    private int CurrentPressure = 0;
     private float MaximalPressure = 0.00f;
     private float RelativePressure = 0.00f;
+    private string[] ArduinoData;      //Data from Arduino
     private float r = 0.0f;
     private float g = 0.0f;
     private float b = 0.0f;
@@ -185,29 +193,27 @@ public class InputStrainInfo : MonoBehaviour
 
     void UpdateValues()
     {
-        //lerpSpeed = 3f * Time.deltaTime;
+        ArduinoData = ArduinoScript.datas;
 
-        if (progressValue < duration)
+        CurrentPressure = Convert.ToInt32(ArduinoData[0]);
+        distance = Convert.ToInt32(ArduinoData[1]);
+
+        if (distance > 0 & distance <= 20)  //To change value of the maximum pressure according to distance in blood vessel
         {
-            distance = myTimePath.positioncoordinates[progressValue].PosX;
-            CurrentPressure = myTimePath.positioncoordinates[progressValue].curPressure;
-            MaximalPressure = myTimePath.positioncoordinates[progressValue].maxPressure;
-            RelativePressure = CurrentPressure / MaximalPressure * 100;
-
-            uiFloFieldCur.value = CurrentPressure;    //Writes value from Excel file to float field
-            uiFloFieldMax.value = MaximalPressure;    //Writes value from Excel file to float field
+            MaximalPressure = 400;
+            uiFloFieldCur.value = CurrentPressure;
+            uiFloFieldMax.value = MaximalPressure;
 
             uiLabel.text = "Relative pressure: " + Convert.ToInt32(RelativePressure).ToString() + "%";
-            
             uiDistancePB.value = distance;
 
-            //Checks if the relative pressure is smaller than or equal to 50 to be able to visualize in the progressbar with color
-            //(from green to yellow/orange)
+            RelativePressure = CurrentPressure / MaximalPressure * 100;
+
             if (RelativePressure <= 50)
             {
                 r = 1.0f * (RelativePressure / 50);
                 g = 1.0f;
-                
+
                 horzProgressBar.fillAmount = RelativePressure / 100;
                 horzProgressBar.color = new Color(r, g, b, a);
             }
@@ -231,7 +237,102 @@ public class InputStrainInfo : MonoBehaviour
             }
             progressValue += 1;     //Increase progressValue by 1 to index the next timestamp data next time
 
-            for (int i = 0; i < healthBarPoints.Length; i ++)
+            for (int i = 0; i < healthBarPoints.Length; i++)
+            {
+                healthBarPoints[i].enabled = !DisplayHealthPoint(RelativePressure, i);
+            }
+        }
+
+        if (distance > 20)      //To change value of the maximum pressure according to distance in blood vessel
+        {
+            MaximalPressure = 800;
+            uiFloFieldCur.value = CurrentPressure;
+            uiFloFieldMax.value = MaximalPressure;
+
+            uiLabel.text = "Relative pressure: " + Convert.ToInt32(RelativePressure).ToString() + "%";
+            uiDistancePB.value = distance;
+
+            RelativePressure = CurrentPressure / MaximalPressure * 100;
+
+            if (RelativePressure <= 50)
+            {
+                r = 1.0f * (RelativePressure / 50);
+                g = 1.0f;
+
+                horzProgressBar.fillAmount = RelativePressure / 100;
+                horzProgressBar.color = new Color(r, g, b, a);
+            }
+
+            //Checks if the relative pressure is greater than 50 and smaller than or equal to 100 to be able to visualize in the
+            //progressbar with color (from yellow/orange to red)
+            if (RelativePressure > 50 & RelativePressure <= 100)
+            {
+                r = 1.0f;
+                g = 1.0f * (1 - (RelativePressure - 50.0f) / 50);
+
+                horzProgressBar.fillAmount = RelativePressure / 100;
+                horzProgressBar.color = new Color(r, g, b, a);
+            }
+
+            //If the relative pressure is larger than 100, the progressbar will display 100
+            if (RelativePressure > 100)
+            {
+                horzProgressBar.fillAmount = 1;
+                horzProgressBar.color = Color.red;
+            }
+            progressValue += 1;     //Increase progressValue by 1 to index the next timestamp data next time
+
+            for (int i = 0; i < healthBarPoints.Length; i++)
+            {
+                healthBarPoints[i].enabled = !DisplayHealthPoint(RelativePressure, i);
+            }
+        }
+
+        /*if (progressValue < duration)
+        {
+            distance = myTimePath.positioncoordinates[progressValue].PosX;
+            CurrentPressure = myTimePath.positioncoordinates[progressValue].curPressure;
+            MaximalPressure = myTimePath.positioncoordinates[progressValue].maxPressure;
+            RelativePressure = CurrentPressure / MaximalPressure * 100;
+
+            uiFloFieldCur.value = CurrentPressure;    //Writes value from Excel file to float field
+            uiFloFieldMax.value = MaximalPressure;    //Writes value from Excel file to float field
+
+            uiLabel.text = "Relative pressure: " + Convert.ToInt32(RelativePressure).ToString() + "%";
+
+            uiDistancePB.value = distance;
+
+            //Checks if the relative pressure is smaller than or equal to 50 to be able to visualize in the progressbar with color
+            //(from green to yellow/orange)
+            if (RelativePressure <= 50)
+            {
+                r = 1.0f * (RelativePressure / 50);
+                g = 1.0f;
+
+                horzProgressBar.fillAmount = RelativePressure / 100;
+                horzProgressBar.color = new Color(r, g, b, a);
+            }
+
+            //Checks if the relative pressure is greater than 50 and smaller than or equal to 100 to be able to visualize in the
+            //progressbar with color (from yellow/orange to red)
+            if (RelativePressure > 50 & RelativePressure <= 100)
+            {
+                r = 1.0f;
+                g = 1.0f * (1 - (RelativePressure - 50.0f) / 50);
+
+                horzProgressBar.fillAmount = RelativePressure / 100;
+                horzProgressBar.color = new Color(r, g, b, a);
+            }
+
+            //If the relative pressure is larger than 100, the progressbar will display 100
+            if (RelativePressure > 100)
+            {
+                horzProgressBar.fillAmount = 1;
+                horzProgressBar.color = Color.red;
+            }
+            progressValue += 1;     //Increase progressValue by 1 to index the next timestamp data next time
+
+            for (int i = 0; i < healthBarPoints.Length; i++)
             {
                 healthBarPoints[i].enabled = !DisplayHealthPoint(RelativePressure, i);
             }
@@ -240,7 +341,7 @@ public class InputStrainInfo : MonoBehaviour
         else
         {
             uiButton.text = "Finished";
-        }
+        }*/
     }
 
     bool DisplayHealthPoint(float _health, int pointNumber)
