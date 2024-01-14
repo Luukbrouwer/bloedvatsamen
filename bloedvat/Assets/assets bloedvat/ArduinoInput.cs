@@ -1,5 +1,6 @@
 //=========================================
 //dit is het script voor de input
+// in dit script wordt ook aan de guidewire een kracht gegeven relatief aan de druk die gemeten wordt. 
 //=========================================
 
 
@@ -21,10 +22,10 @@ public class ArduinoInput : MonoBehaviour
     
     private Vector3 beginGuwi;
     
-    //======================
-    //spatiebalk
-    public float ForceApplied = -20f;
-    //==========================
+    public float areaGuideWire =1;
+    public float PressureToForce;
+   
+    
 
     
     void Start()
@@ -39,20 +40,20 @@ public class ArduinoInput : MonoBehaviour
     {
         //for arduino connection:
         receivedstring = data_stream.ReadLine();
-
         string[] datas = receivedstring.Split(";"); //split data tussen ';'
-        float length= float.Parse(datas[0]) *0.00001f;
-        transform.position = new Vector3(beginGuwi[0], beginGuwi[1] - length, beginGuwi[2]);
+        float CurrentPressure = float.Parse(datas[0]);
+
+        PressureToForce= CurrentPressure * areaGuideWire;
+        rb.AddForce(0, -PressureToForce * Time.deltaTime, 0);
+
+        // voor bewegen van guidewire met magnetic angle sensor:===============================
+        //float length= float.Parse(datas[0]) *0.00001f;
+        //transform.position = new Vector3(beginGuwi[0], beginGuwi[1] - length, beginGuwi[2]);
+        //=====================================================================================
     }
 
 
-    void FixedUpdate() //spatiebalk...
-    {
-        if (Input.GetKey("space"))
-        {
-            rb.AddForce(0, -ForceApplied * Time.deltaTime, 0);
-        }
-    }
+    
 
     void OnApplicationQuit()
     {
