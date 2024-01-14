@@ -19,6 +19,7 @@ public class InputBloodVesselInfo : MonoBehaviour
     UnityEngine.UIElements.Label uiLabel;
     public UnityEngine.UIElements.Label uiScanText;
     public UnityEngine.UIElements.Label uiScanWarning;
+    public TextField uiPatientName;
     public FloatField uiLengthBV;
     public FloatField uiLocationVC;
     public DropdownField uiDropdownField;
@@ -36,6 +37,7 @@ public class InputBloodVesselInfo : MonoBehaviour
         uiLengthBV = StrainInfoDocument.rootVisualElement.Q("LengthBloodVessel") as FloatField;
         uiLocationVC = StrainInfoDocument.rootVisualElement.Q("LocationVasoconstriction") as FloatField;
         uiDropdownField = StrainInfoDocument.rootVisualElement.Q("DropdownField") as DropdownField;
+        uiPatientName = StrainInfoDocument.rootVisualElement.Q("PatientName") as TextField;
         //Elements second UI window
         uiInfoSurgeon = StrainInfoDocument.rootVisualElement.Q("InfoSurgeon") as GroupBox;
         uiButton = StrainInfoDocument.rootVisualElement.Q("NextButton") as UnityEngine.UIElements.Button;
@@ -101,12 +103,14 @@ public class InputBloodVesselInfo : MonoBehaviour
         uiGroupBox.style.borderLeftColor = Color.grey;
     }
 
+    public string PatientName;      //Name of the patient
     public float BVlength;         //Total blood vessel length
     public float VClocation;       //Vasoconstriction location within blood vessel
     public string BVtype;          //Blood vessel type
 
     void Update()
     {
+        PatientName = uiPatientName.value;
         BVlength = uiLengthBV.value;
         VClocation = uiLocationVC.value;
         BVtype = uiDropdownField.value;
@@ -122,7 +126,7 @@ public class InputBloodVesselInfo : MonoBehaviour
             uiScanWarning.text = "";
         }
 
-        if (BVlength != 0 & VClocation != 0 & BVtype != null & BVlength >= VClocation)
+        if (BVlength != 0 & VClocation != 0 & BVtype != null & BVlength >= VClocation & PatientName != null & PatientName != "Type name")
         {
             uiButton.text = "Next!";
             uiButton.style.color = Color.black;
@@ -134,7 +138,7 @@ public class InputBloodVesselInfo : MonoBehaviour
 
     public void OnButtonClick(ClickEvent evt)
     {
-        if (BVlength == 0 || VClocation == 0 || VClocation > BVlength || BVtype == null)
+        if (BVlength == 0 || VClocation == 0 || VClocation > BVlength || BVtype == null || PatientName == null || PatientName == "Type name")
         {
 /*            uiScanWarning.text = "Not all fields have been corretly filled in";
             uiScanWarning.style.color = Color.red;*/
@@ -154,7 +158,7 @@ public class InputBloodVesselInfo : MonoBehaviour
             progressBarBackground.enabled = true;
 
             StrainScript.uiInfoLabel.visible = true;
-            StrainScript.uiInfoLabel.text = "Patient: " + "\r\n" +
+            StrainScript.uiInfoLabel.text = "Patient: " + PatientName.ToString() + "\r\n" +
                 "Blood vessel type: " + BVtype.ToString() + "\r\n" +
                 "Blood vessel length: " + BVlength.ToString() + " cm" + "\r\n" +
                 "Distance to vasoconstriction: " + VClocation.ToString() + " cm";
