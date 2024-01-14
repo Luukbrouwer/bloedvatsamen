@@ -10,7 +10,7 @@ using static UnityEditor.FilePathAttribute;
 public class InputStrainInfo : MonoBehaviour
 {
     /////////////////////////////////START READING EXCEL FILE//////////////////////////////////////////
-    public TextAsset textAssetData;
+    /*public TextAsset textAssetData;
 
     [System.Serializable]
     public class PositionCoordinates    //Creates an object containing the following data(types)
@@ -56,7 +56,7 @@ public class InputStrainInfo : MonoBehaviour
             };
         }
         return;
-    }
+    }*/
     /////////////////////////////////DONE READING EXCEL FILE//////////////////////////////////////////
 
     UIDocument StrainInfoDocument;
@@ -75,79 +75,69 @@ public class InputStrainInfo : MonoBehaviour
     {
         StrainInfoDocument = GetComponent<UIDocument>();
 
+        //Elements of the first UI window
+        uiScanWarning = StrainInfoDocument.rootVisualElement.Q("ScanWarning") as Label;
+
+        //Elements of the second UI window
+        uiGroupBox = StrainInfoDocument.rootVisualElement.Q("InfoSurgeon") as GroupBox;
+        uiButton = StrainInfoDocument.rootVisualElement.Q("StartButton") as UnityEngine.UIElements.Button;
+        uiFloFieldCur = StrainInfoDocument.rootVisualElement.Q("CurrentPressureValue") as FloatField;
+        uiFloFieldMax = StrainInfoDocument.rootVisualElement.Q("MaximalPressureValue") as FloatField;
+        uiLabel = StrainInfoDocument.rootVisualElement.Q("RelativePressureLabel") as Label;
+        uiDistancePB = StrainInfoDocument.rootVisualElement.Q("DistanceProgressbar") as ProgressBar;
+
+        //Checks if elements of the UI are present
         if (StrainInfoDocument == null)
         {
             Debug.LogError("No button document found"); //Checks if UI document is found
         }
-
-        uiGroupBox = StrainInfoDocument.rootVisualElement.Q("InfoSurgeon") as GroupBox;
-
         if (uiGroupBox == null)
         {
             Debug.Log("Group box NOT found"); //Checks if group box is found
         }
-
-        uiFloFieldCur = StrainInfoDocument.rootVisualElement.Q("CurrentPressureValue") as FloatField;
-
         if (uiFloFieldCur == null)
         {
             Debug.Log("Current pressure float field NOT found"); //Checks if current pressure float field is found
         }
-
-        uiFloFieldMax = StrainInfoDocument.rootVisualElement.Q("MaximalPressureValue") as FloatField;
-
         if (uiFloFieldMax == null)
         {
             Debug.Log("Maximal pressure float field NOT found"); //Checks if maximal pressure float field is found
         }
-
-        uiButton = StrainInfoDocument.rootVisualElement.Q("StartButton") as UnityEngine.UIElements.Button;
-
         if (uiButton == null)
         {
             Debug.Log("Button NOT found"); //Checks if button is found
         }
-
-        uiLabel = StrainInfoDocument.rootVisualElement.Q("RelativePressureLabel") as Label;
-
         if (uiLabel == null)
         {
             Debug.Log("Label NOT found"); //Checks if label is found
         }
-
-        uiScanWarning = StrainInfoDocument.rootVisualElement.Q("ScanWarning") as Label;
-
         if (uiScanWarning == null)
         {
             Debug.Log("Scan text NOT found"); //Checks if scan warning is found
         }
 
-        uiDistancePB = StrainInfoDocument.rootVisualElement.Q("DistanceProgressbar") as ProgressBar;
-
-        uiButton.RegisterCallback<ClickEvent>(OnButtonClick);
+        uiButton.RegisterCallback<ClickEvent>(OnButtonClick);   //Runs OnButtonClick funtion when button is clicked
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        ReadCSV();
-/*        uiGroupBox.style.backgroundColor = Color.white;
-        uiGroupBox.style.borderBottomWidth = 3;
+        //ReadCSV();                                        //Start reading Excel file
+        uiGroupBox.style.borderBottomWidth = 3;             //Layout of the second UI window
         uiGroupBox.style.borderBottomColor = Color.black;
         uiGroupBox.style.borderRightWidth = 3;
         uiGroupBox.style.borderRightColor = Color.black;
         uiGroupBox.style.borderTopWidth = 3;
         uiGroupBox.style.borderTopColor = Color.black;
         uiGroupBox.style.borderLeftWidth = 3;
-        uiGroupBox.style.borderLeftColor = Color.black;*/
-        //uiSlider.showInputField = false;
+        uiGroupBox.style.borderLeftColor = Color.black;
     }
 
-    public float TimeStep = 1.00f;  //Time step with which the data is being gathered
-    public ArduinoInput ArduinoScript;
-    public InputBloodVesselInfo BVscript;
+    public float TimeStep = 1.00f;          //Time step with which the data is being gathered
+    public ArduinoInput ArduinoScript;      //Get access to variables in ArduinoInput script
+    public InputBloodVesselInfo BVscript;   //Get access to variables in InputBloodVesselInfo script
 
-    private bool running = false;
+    private bool running = false;   //Bool that says whether the data from the Arduino is transfered to the UI
 
     public void OnButtonClick(ClickEvent evt)
     {
@@ -174,22 +164,21 @@ public class InputStrainInfo : MonoBehaviour
 
         if (uiButton.text == "Running...")
         {
-            Debug.Log("Running");
             UpdateValues();
             running = true;
         }
     }
 
-    private int progressValue = 0;    //Initialize start value of progressbar
-    private int distance = 0;
-    private int CurrentPressure = 0;
-    private float MaximalPressure = 0.00f;
-    private float RelativePressure = 0.00f;
-    private string[] ArduinoData;      //Data from Arduino
-    private float r = 0.0f;
-    private float g = 0.0f;
-    private float b = 0.0f;
-    private float a = 1.0f;
+    private int progressValue = 0;          //Initialize start value of progressbar
+    private int distance = 0;               //Distance the guidewire is in the bloodvessel
+    private int CurrentPressure = 0;        //Variable that displays the current pressure of the GW on the BV
+    private float MaximalPressure = 0.00f;  //Variable that displays the maximum pressure of the GW on the BV
+    private float RelativePressure = 0.00f; //Variable that displays the relative pressure of the GW on the BV
+    private string[] ArduinoData;           //Data from Arduino
+    private float r = 0.0f;                 //RGB-value to set color of the progressbar
+    private float g = 0.0f;                 //RGB-value to set color of the progressbar
+    private float b = 0.0f;                 //RGB-value to set color of the progressbar
+    private float a = 1.0f;                 //RGB-value to set color of the progressbar
 
     void UpdateValues()
     {

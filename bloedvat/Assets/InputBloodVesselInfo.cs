@@ -30,87 +30,80 @@ public class InputBloodVesselInfo : MonoBehaviour
     {
         StrainInfoDocument = GetComponent<UIDocument>();
 
+        //Elements first UI window
+        uiScanText = StrainInfoDocument.rootVisualElement.Q("ScanText") as UnityEngine.UIElements.Label;
+        uiScanWarning = StrainInfoDocument.rootVisualElement.Q("ScanWarning") as UnityEngine.UIElements.Label;
+        uiLengthBV = StrainInfoDocument.rootVisualElement.Q("LengthBloodVessel") as FloatField;
+        uiLocationVC = StrainInfoDocument.rootVisualElement.Q("LocationVasoconstriction") as FloatField;
+        uiDropdownField = StrainInfoDocument.rootVisualElement.Q("DropdownField") as DropdownField;
+        //Elements second UI window
+        uiInfoSurgeon = StrainInfoDocument.rootVisualElement.Q("InfoSurgeon") as GroupBox;
+        uiButton = StrainInfoDocument.rootVisualElement.Q("NextButton") as UnityEngine.UIElements.Button;
+        uiGroupBox = StrainInfoDocument.rootVisualElement.Q("InfoScan") as GroupBox;
+        uiLabel = StrainInfoDocument.rootVisualElement.Q("RelativePressureLabel") as UnityEngine.UIElements.Label;
+        uiDistanceText = StrainInfoDocument.rootVisualElement.Q("DistanceText") as UnityEngine.UIElements.Label;
+        uiDistancePB = StrainInfoDocument.rootVisualElement.Q("DistanceProgressbar") as ProgressBar;
+
+        //Checks if elements are present
         if (StrainInfoDocument == null)
         {
             Debug.LogError("No button document found"); //Checks if UI document is found
         }
-
-        uiInfoSurgeon = StrainInfoDocument.rootVisualElement.Q("InfoSurgeon") as GroupBox;
-
         if (uiInfoSurgeon == null)
         {
             Debug.Log("Group box NOT found"); //Checks if group box is found
         }
-
-        uiButton = StrainInfoDocument.rootVisualElement.Q("NextButton") as UnityEngine.UIElements.Button;
-
         if (uiButton == null)
         {
             Debug.Log("Button NOT found"); //Checks if button is found
         }
-
-        uiScanText = StrainInfoDocument.rootVisualElement.Q("ScanText") as UnityEngine.UIElements.Label;
-
         if (uiScanText == null)
         {
             Debug.Log("Scan text NOT found"); //Checks if scan text is found
         }
-
-        uiScanWarning = StrainInfoDocument.rootVisualElement.Q("ScanWarning") as UnityEngine.UIElements.Label;
-
         if (uiScanWarning == null)
         {
             Debug.Log("Scan text NOT found"); //Checks if scan warning is found
         }
-
-        uiGroupBox = StrainInfoDocument.rootVisualElement.Q("InfoScan") as GroupBox;
-
         if (uiGroupBox == null)
         {
             Debug.Log("Group box NOT found"); //Checks if group box is found
         }
-
-        uiLengthBV = StrainInfoDocument.rootVisualElement.Q("LengthBloodVessel") as FloatField;
-
         if (uiLengthBV == null)
         {
             Debug.Log("Length blood vessel NOT found"); //Checks if length blood vessel is found
         }
-
-        uiLocationVC = StrainInfoDocument.rootVisualElement.Q("LocationVasoconstriction") as FloatField;
-
         if (uiLocationVC == null)
         {
             Debug.Log("Location vasoconstriction NOT found"); //Checks if location vasoconstriction is found
         }
-
-        uiDropdownField = StrainInfoDocument.rootVisualElement.Q("DropdownField") as DropdownField;
-
         if (uiDropdownField == null)
         {
             Debug.Log("Dropdown menu NOT found"); //Checks if dropdown menu is found
         }
 
-        uiLabel = StrainInfoDocument.rootVisualElement.Q("RelativePressureLabel") as UnityEngine.UIElements.Label;
-        uiDistanceText = StrainInfoDocument.rootVisualElement.Q("DistanceText") as UnityEngine.UIElements.Label;
-        uiDistancePB = StrainInfoDocument.rootVisualElement.Q("DistanceProgressbar") as ProgressBar;
-
-        uiButton.RegisterCallback<ClickEvent>(OnButtonClick);
+        uiButton.RegisterCallback<ClickEvent>(OnButtonClick);   //Runs the OnButtonClick function when the button is clicked
     }
 
-    // Start is called before the first frame update
     void Start()
     {
-        uiInfoSurgeon.visible = false;
-        progressBar.enabled = false;
-        progressBarBackground.enabled = false;
+        uiInfoSurgeon.visible = false;                      //Hide second UI window with surgeon info
+        progressBar.enabled = false;                        //Hide the self-made progressbar
+        progressBarBackground.enabled = false;              //Hide background of self-made progressbar
+        uiGroupBox.style.borderBottomWidth = 3;             //Layout of the first UI window
+        uiGroupBox.style.borderBottomColor = Color.black;
+        uiGroupBox.style.borderRightWidth = 3;
+        uiGroupBox.style.borderRightColor = Color.black;
+        uiGroupBox.style.borderTopWidth = 3;
+        uiGroupBox.style.borderTopColor = Color.black;
+        uiGroupBox.style.borderLeftWidth = 3;
+        uiGroupBox.style.borderLeftColor = Color.black;
     }
 
     public float BVlength;         //Total blood vessel length
     public float VClocation;       //Vasoconstriction location within blood vessel
     public string BVtype;          //Blood vessel type
 
-    // Update is called once per frame
     void Update()
     {
         BVlength = uiLengthBV.value;

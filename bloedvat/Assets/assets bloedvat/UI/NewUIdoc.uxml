@@ -1,6 +1,5 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <ui:Label tabindex="-1" text="Cathbeter" parse-escape-sequences="true" display-tooltip-when-elided="true" style="font-size: 50px; -unity-text-align: upper-center; height: 50px; -unity-font-style: bold;" />
-    <ui:Label tabindex="-1" text="Guide your way!" parse-escape-sequences="true" display-tooltip-when-elided="true" style="-unity-text-align: upper-center; font-size: 25px; height: 50px; -unity-font-style: italic;" />
+    <ui:Label tabindex="-1" text="Guide your way!" parse-escape-sequences="true" display-tooltip-when-elided="true" style="-unity-text-align: upper-center; font-size: 25px; height: 50px; -unity-font-style: italic; margin-bottom: 20px; margin-top: 148px;" />
     <ui:GroupBox name="InfoSurgeon" style="background-color: rgba(255, 255, 255, 0); border-top-width: 5px; border-right-width: 5px; border-bottom-width: 5px; border-left-width: 5px; border-left-color: rgba(0, 0, 0, 0); border-right-color: rgba(0, 0, 0, 0); border-top-color: rgba(0, 0, 0, 0); border-bottom-color: rgba(0, 0, 0, 0); border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0; justify-content: flex-start; width: auto; height: auto; max-width: none; padding-bottom: 5px;">
         <ui:Button text="Start" parse-escape-sequences="true" display-tooltip-when-elided="true" name="StartButton" style="font-size: 25px;" />
         <ui:FloatField label="Current pressure " value="0" name="CurrentPressureValue" style="font-size: 25px;" />
@@ -9,8 +8,8 @@
         <ui:Label tabindex="-1" text="Distance to vasoconstriction" parse-escape-sequences="true" display-tooltip-when-elided="true" name="DistanceText" style="font-size: 25px; -unity-text-align: upper-center;" />
         <ui:ProgressBar value="0" name="DistanceProgressbar" />
     </ui:GroupBox>
-    <ui:GroupBox name="InfoScan" style="padding-top: 5px; padding-bottom: 5px; margin-top: -250px;">
-        <ui:Label tabindex="-1" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ScanText" text="Enter the data fields below" style="font-size: 25px; -unity-text-align: upper-center; margin-bottom: 8px; -unity-font-style: bold;" />
+    <ui:GroupBox name="InfoScan" style="padding-top: 5px; padding-bottom: 5px; margin-top: -410px;">
+        <ui:Label tabindex="-1" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ScanText" text="Enter the data fields below:" style="font-size: 25px; -unity-text-align: upper-center; margin-bottom: 8px; -unity-font-style: bold;" />
         <ui:DropdownField label="Type of blood vessel        " index="-1" choices="Aorta, Coronary artery, Femoral artery" name="DropdownField" style="font-size: 25px;" />
         <ui:FloatField label="Length blood vessel         " value="0" name="LengthBloodVessel" style="font-size: 25px;" />
         <ui:FloatField label="Location vasoconstriction" value="0" name="LocationVasoconstriction" style="font-size: 25px;" />
