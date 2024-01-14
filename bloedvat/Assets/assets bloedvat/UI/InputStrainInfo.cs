@@ -61,12 +61,14 @@ public class InputStrainInfo : MonoBehaviour
 
     UIDocument StrainInfoDocument;
     public GroupBox uiGroupBox;
+    public Label uiInfoLabel;
     UnityEngine.UIElements.Button uiButton;
     FloatField uiFloFieldCur;
     FloatField uiFloFieldMax;
     Label uiLabel;
     ProgressBar uiDistancePB;
     Label uiScanWarning;
+    public UnityEngine.UIElements.Button uiBackButton;
 
     public UnityEngine.UI.Image horzProgressBar;
     public UnityEngine.UI.Image[] healthBarPoints;
@@ -80,11 +82,14 @@ public class InputStrainInfo : MonoBehaviour
 
         //Elements of the second UI window
         uiGroupBox = StrainInfoDocument.rootVisualElement.Q("InfoSurgeon") as GroupBox;
+        uiInfoLabel = StrainInfoDocument.rootVisualElement.Q("PatientInfo") as Label;
         uiButton = StrainInfoDocument.rootVisualElement.Q("StartButton") as UnityEngine.UIElements.Button;
         uiFloFieldCur = StrainInfoDocument.rootVisualElement.Q("CurrentPressureValue") as FloatField;
         uiFloFieldMax = StrainInfoDocument.rootVisualElement.Q("MaximalPressureValue") as FloatField;
         uiLabel = StrainInfoDocument.rootVisualElement.Q("RelativePressureLabel") as Label;
         uiDistancePB = StrainInfoDocument.rootVisualElement.Q("DistanceProgressbar") as ProgressBar;
+        uiBackButton = StrainInfoDocument.rootVisualElement.Q("BackButton") as UnityEngine.UIElements.Button;
+
 
         //Checks if elements of the UI are present
         if (StrainInfoDocument == null)
@@ -116,7 +121,8 @@ public class InputStrainInfo : MonoBehaviour
             Debug.Log("Scan text NOT found"); //Checks if scan warning is found
         }
 
-        uiButton.RegisterCallback<ClickEvent>(OnButtonClick);   //Runs OnButtonClick funtion when button is clicked
+        uiButton.RegisterCallback<ClickEvent>(OnButtonClick);           //Runs OnButtonClick funtion when button is clicked
+        uiBackButton.RegisterCallback<ClickEvent>(OnBackButtonClick);   //Runs OnBackButtonClick funtion when button is clicked
     }
 
     // Start is called before the first frame update
@@ -124,13 +130,14 @@ public class InputStrainInfo : MonoBehaviour
     {
         //ReadCSV();                                        //Start reading Excel file
         uiGroupBox.style.borderBottomWidth = 3;             //Layout of the second UI window
-        uiGroupBox.style.borderBottomColor = Color.black;
+        uiGroupBox.style.borderBottomColor = Color.grey;
         uiGroupBox.style.borderRightWidth = 3;
-        uiGroupBox.style.borderRightColor = Color.black;
+        uiGroupBox.style.borderRightColor = Color.grey;
         uiGroupBox.style.borderTopWidth = 3;
-        uiGroupBox.style.borderTopColor = Color.black;
+        uiGroupBox.style.borderTopColor = Color.grey;
         uiGroupBox.style.borderLeftWidth = 3;
-        uiGroupBox.style.borderLeftColor = Color.black;
+        uiGroupBox.style.borderLeftColor = Color.grey;
+        uiBackButton.visible = false;
     }
 
     public float TimeStep = 1.00f;          //Time step with which the data is being gathered
@@ -138,22 +145,53 @@ public class InputStrainInfo : MonoBehaviour
     public InputBloodVesselInfo BVscript;   //Get access to variables in InputBloodVesselInfo script
 
     private bool running = false;   //Bool that says whether the data from the Arduino is transfered to the UI
+    private int buttonClicked = 0;  //Counts the amount of times the button is clicked
 
     public void OnButtonClick(ClickEvent evt)
     {
-        if (running == false)
+        if (running == false & buttonClicked % 2 == 0)
         {
             //InvokeRepeating("UpdateValues", 0, TimeStep);    //Calls function UpdateProgressValue every TimeStep seconds
             uiButton.text = "Running...";
+            running = true;
+            buttonClicked += 1;
+        }
+
+        if (running == true & buttonClicked % 2 != 0)
+        {
+            uiButton.text = "Stopped, press to start";
+            Application.Quit();
+            Debug.Log("Quit");
+            running = false;
+            buttonClicked += 1;
+        }
+    }
+
+    public void OnBackButtonClick(ClickEvent evt)
+    {
+        if (running == false)
+        {
+            uiGroupBox.visible = false;
+            BVscript.uiGroupBox.visible = true;
+            uiInfoLabel.visible = false;
+            uiBackButton.visible = false;
+            BVscript.progressBar.enabled = false;
+            BVscript.progressBarBackground.enabled = false;
         }
 
         if (running == true)
         {
-            Application.Quit();
-            Debug.Log("Quit");
+            uiButton.text = "Stopped";
+            uiGroupBox.visible = false;
+            BVscript.uiGroupBox.visible = true;
+            uiInfoLabel.visible = false;
+            uiBackButton.visible = false;
+            BVscript.progressBar.enabled = false;
+            BVscript.progressBarBackground.enabled = false;
+            running = false;
         }
     }
-    
+
     // Update is called once per frame
     void Update()
     {
@@ -162,10 +200,9 @@ public class InputStrainInfo : MonoBehaviour
             uiDistancePB.highValue = BVscript.uiLocationVC.value;
         }
 
-        if (uiButton.text == "Running...")
+        if (running == true)
         {
             UpdateValues();
-            running = true;
         }
     }
 

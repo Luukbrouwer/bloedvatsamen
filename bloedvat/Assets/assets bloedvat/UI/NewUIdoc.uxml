@@ -1,19 +1,21 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <ui:Label tabindex="-1" text="Guide your way!" parse-escape-sequences="true" display-tooltip-when-elided="true" style="-unity-text-align: upper-center; font-size: 25px; height: 50px; -unity-font-style: italic; margin-bottom: 20px; margin-top: 148px;" />
+    <ui:Label tabindex="-1" text="Patient:&#10;Blood vessel type:&#10;Blood vessel length:&#10;Distance to vasoconstriction: " parse-escape-sequences="true" display-tooltip-when-elided="true" name="PatientInfo" style="margin-bottom: 45px; margin-left: 10px;" />
+    <ui:Label tabindex="-1" text="Guide your way!" parse-escape-sequences="true" display-tooltip-when-elided="true" style="-unity-text-align: upper-center; font-size: 25px; height: 50px; -unity-font-style: italic; margin-bottom: 5px;" />
     <ui:GroupBox name="InfoSurgeon" style="background-color: rgba(255, 255, 255, 0); border-top-width: 5px; border-right-width: 5px; border-bottom-width: 5px; border-left-width: 5px; border-left-color: rgba(0, 0, 0, 0); border-right-color: rgba(0, 0, 0, 0); border-top-color: rgba(0, 0, 0, 0); border-bottom-color: rgba(0, 0, 0, 0); border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0; justify-content: flex-start; width: auto; height: auto; max-width: none; padding-bottom: 5px;">
-        <ui:Button text="Start" parse-escape-sequences="true" display-tooltip-when-elided="true" name="StartButton" style="font-size: 25px;" />
-        <ui:FloatField label="Current pressure " value="0" name="CurrentPressureValue" style="font-size: 25px;" />
-        <ui:FloatField label="Maximal pressure" value="0" name="MaximalPressureValue" style="font-size: 25px;" />
+        <ui:Button text="Start" parse-escape-sequences="true" display-tooltip-when-elided="true" name="StartButton" style="font-size: 25px; top: auto; position: relative; left: auto; right: auto; align-items: stretch; align-self: center;" />
+        <ui:FloatField label="Current pressure [Pa]   " value="0" name="CurrentPressureValue" style="font-size: 25px; justify-content: flex-start; align-self: flex-start;" />
+        <ui:FloatField label="Maximum pressure [Pa]" value="0" name="MaximalPressureValue" style="font-size: 25px; align-self: flex-start;" />
         <ui:Label tabindex="-1" text="Relative pressure: 0%" parse-escape-sequences="true" display-tooltip-when-elided="true" name="RelativePressureLabel" style="align-self: center; font-size: 25px; padding-top: 20px; padding-bottom: 90px; -unity-font-style: bold;" />
         <ui:Label tabindex="-1" text="Distance to vasoconstriction" parse-escape-sequences="true" display-tooltip-when-elided="true" name="DistanceText" style="font-size: 25px; -unity-text-align: upper-center;" />
         <ui:ProgressBar value="0" name="DistanceProgressbar" />
     </ui:GroupBox>
+    <ui:Button text="Back" parse-escape-sequences="true" display-tooltip-when-elided="true" name="BackButton" style="font-size: 25px; margin-top: 40px; align-self: center;" />
     <ui:GroupBox name="InfoScan" style="padding-top: 5px; padding-bottom: 5px; margin-top: -410px;">
-        <ui:Label tabindex="-1" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ScanText" text="Enter the data fields below:" style="font-size: 25px; -unity-text-align: upper-center; margin-bottom: 8px; -unity-font-style: bold;" />
-        <ui:DropdownField label="Type of blood vessel        " index="-1" choices="Aorta, Coronary artery, Femoral artery" name="DropdownField" style="font-size: 25px;" />
-        <ui:FloatField label="Length blood vessel         " value="0" name="LengthBloodVessel" style="font-size: 25px;" />
-        <ui:FloatField label="Location vasoconstriction" value="0" name="LocationVasoconstriction" style="font-size: 25px;" />
+        <ui:Label tabindex="-1" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ScanText" text="Enter the data fields below:" style="font-size: 25px; -unity-text-align: upper-center; margin-bottom: 8px; -unity-font-style: bold; align-self: flex-start;" />
+        <ui:DropdownField label="Type of blood vessel                     " index="-1" choices="Aorta, Coronary artery, Femoral artery" name="DropdownField" style="font-size: 25px; align-self: flex-start; min-width: auto; width: 700px;" />
+        <ui:FloatField label="Length blood vessel [cm]              " value="0" name="LengthBloodVessel" style="font-size: 25px; align-self: flex-start;" />
+        <ui:FloatField label="Distance to vasoconstriction [cm]" value="0" name="LocationVasoconstriction" style="font-size: 25px; align-self: flex-start;" />
         <ui:Label tabindex="-1" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ScanWarning" style="font-size: 25px; -unity-text-align: upper-center;" />
-        <ui:Button text="Next!" parse-escape-sequences="true" display-tooltip-when-elided="true" name="NextButton" style="font-size: 25px; margin-top: 20px;" />
+        <ui:Button text="Next!" parse-escape-sequences="true" display-tooltip-when-elided="true" name="NextButton" style="font-size: 25px; margin-top: 20px; align-self: center;" />
     </ui:GroupBox>
 </ui:UXML>

@@ -14,7 +14,7 @@ public class InputBloodVesselInfo : MonoBehaviour
     GroupBox uiInfoSurgeon;
     UnityEngine.UIElements.Label uiDistanceText;
     ProgressBar uiDistancePB;
-    GroupBox uiGroupBox;
+    public GroupBox uiGroupBox;
     UnityEngine.UIElements.Button uiButton;
     UnityEngine.UIElements.Label uiLabel;
     public UnityEngine.UIElements.Label uiScanText;
@@ -87,17 +87,18 @@ public class InputBloodVesselInfo : MonoBehaviour
 
     void Start()
     {
+        StrainScript.uiInfoLabel.visible = false;
         uiInfoSurgeon.visible = false;                      //Hide second UI window with surgeon info
         progressBar.enabled = false;                        //Hide the self-made progressbar
         progressBarBackground.enabled = false;              //Hide background of self-made progressbar
         uiGroupBox.style.borderBottomWidth = 3;             //Layout of the first UI window
-        uiGroupBox.style.borderBottomColor = Color.black;
+        uiGroupBox.style.borderBottomColor = Color.grey;
         uiGroupBox.style.borderRightWidth = 3;
-        uiGroupBox.style.borderRightColor = Color.black;
+        uiGroupBox.style.borderRightColor = Color.grey;
         uiGroupBox.style.borderTopWidth = 3;
-        uiGroupBox.style.borderTopColor = Color.black;
+        uiGroupBox.style.borderTopColor = Color.grey;
         uiGroupBox.style.borderLeftWidth = 3;
-        uiGroupBox.style.borderLeftColor = Color.black;
+        uiGroupBox.style.borderLeftColor = Color.grey;
     }
 
     public float BVlength;         //Total blood vessel length
@@ -145,11 +146,18 @@ public class InputBloodVesselInfo : MonoBehaviour
         {
             uiGroupBox.visible = false;
             StrainScript.uiGroupBox.visible = true;
+            StrainScript.uiBackButton.visible = true;
 
             //progressBar.transform.position = uiLabel.worldTransform.GetPosition() + new Vector3(-27, -84, 0);
             //progressBarBackground.transform.position = uiLabel.worldTransform.GetPosition() + new Vector3(-25, -88, 0);
             progressBar.enabled = true;
             progressBarBackground.enabled = true;
+
+            StrainScript.uiInfoLabel.visible = true;
+            StrainScript.uiInfoLabel.text = "Patient: " + "\r\n" +
+                "Blood vessel type: " + BVtype.ToString() + "\r\n" +
+                "Blood vessel length: " + BVlength.ToString() + " cm" + "\r\n" +
+                "Distance to vasoconstriction: " + VClocation.ToString() + " cm";
         }
     }
 }
