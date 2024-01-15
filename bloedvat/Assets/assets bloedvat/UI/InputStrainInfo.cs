@@ -145,25 +145,21 @@ public class InputStrainInfo : MonoBehaviour
     public InputBloodVesselInfo BVscript;   //Get access to variables in InputBloodVesselInfo script
 
     private bool running = false;   //Bool that says whether the data from the Arduino is transfered to the UI
-    private int buttonClicked = 0;  //Counts the amount of times the button is clicked
 
     public void OnButtonClick(ClickEvent evt)
     {
-        if (running == false & buttonClicked % 2 == 0)
+        if (running == false)
         {
             //InvokeRepeating("UpdateValues", 0, TimeStep);    //Calls function UpdateProgressValue every TimeStep seconds
             uiButton.text = "Running...";
             running = true;
-            buttonClicked += 1;
         }
 
-        if (running == true & buttonClicked % 2 != 0)
+        else
         {
             uiButton.text = "Stopped, press to start";
-            Application.Quit();
             Debug.Log("Quit");
             running = false;
-            buttonClicked += 1;
         }
     }
 
@@ -220,9 +216,10 @@ public class InputStrainInfo : MonoBehaviour
     void UpdateValues()
     {
         ArduinoData = ArduinoScript.datas;
-
-        CurrentPressure = Convert.ToInt32(ArduinoData[0]);
-        distance = Convert.ToInt32(ArduinoData[1]);
+        float distance= ArduinoScript.distance;
+        float CurrentPressure=ArduinoScript.CurrentPressure;
+        //CurrentPressure = Convert.ToInt32(ArduinoData[0]);
+        //distance = Convert.ToInt32(ArduinoData[1]);
 
         if (distance > 0 & distance <= 20)  //To change value of the maximum pressure according to distance in blood vessel
         {

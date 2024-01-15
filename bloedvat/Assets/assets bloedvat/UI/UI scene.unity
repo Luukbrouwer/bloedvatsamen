@@ -383,7 +383,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 272984035}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8ccbd4577deb7a64998ee4eb8d6c4ff4, type: 3}
   m_Name: 
@@ -391,7 +391,12 @@ MonoBehaviour:
   receivedstring: 
   rb: {fileID: 0}
   datas: []
-  ForceApplied: -20
+  areaGuideWire: 1
+  PressureToForce: 0
+  scalepressure: 10
+  startGW: {x: 0, y: 0, z: 0}
+  distance: 0
+  CurrentPressure: 0
 --- !u!1 &418514871
 GameObject:
   m_ObjectHideFlags: 0
