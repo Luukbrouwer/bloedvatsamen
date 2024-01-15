@@ -62,8 +62,8 @@ public class ArduinoInput : MonoBehaviour
         {
             transform.position = beginGuwi;
         }
-        Debug.Log(CurrentPressure);
-        Debug.Log(distance);
+        //Debug.Log("Arduino " + CurrentPressure.ToString());
+        //Debug.Log("Arduino " + distance.ToString());
     }
 
 

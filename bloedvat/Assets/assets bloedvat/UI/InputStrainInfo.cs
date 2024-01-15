@@ -7,6 +7,8 @@ using System;
 using UnityEngine.UI;
 using static UnityEditor.FilePathAttribute;
 
+
+
 public class InputStrainInfo : MonoBehaviour
 {
     /////////////////////////////////START READING EXCEL FILE//////////////////////////////////////////
@@ -188,6 +190,18 @@ public class InputStrainInfo : MonoBehaviour
         }
     }
 
+    private int progressValue = 0;          //Initialize start value of progressbar
+    private float distance;               //Distance the guidewire is in the bloodvessel
+    private float CurrentPressure;        //Variable that displays the current pressure of the GW on the BV
+    private float MaximalPressure = 0.00f;  //Variable that displays the maximum pressure of the GW on the BV
+    private float RelativePressure = 0.00f; //Variable that displays the relative pressure of the GW on the BV
+    private string[] ArduinoData;           //Data from Arduino
+    private float r = 0.0f;                 //RGB-value to set color of the progressbar
+    private float g = 0.0f;                 //RGB-value to set color of the progressbar
+    private float b = 0.0f;                 //RGB-value to set color of the progressbar
+    private float a = 1.0f;                 //RGB-value to set color of the progressbar
+
+
     // Update is called once per frame
     void Update()
     {
@@ -202,22 +216,13 @@ public class InputStrainInfo : MonoBehaviour
         }
     }
 
-    private int progressValue = 0;          //Initialize start value of progressbar
-    private int distance = 0;               //Distance the guidewire is in the bloodvessel
-    private int CurrentPressure = 0;        //Variable that displays the current pressure of the GW on the BV
-    private float MaximalPressure = 0.00f;  //Variable that displays the maximum pressure of the GW on the BV
-    private float RelativePressure = 0.00f; //Variable that displays the relative pressure of the GW on the BV
-    private string[] ArduinoData;           //Data from Arduino
-    private float r = 0.0f;                 //RGB-value to set color of the progressbar
-    private float g = 0.0f;                 //RGB-value to set color of the progressbar
-    private float b = 0.0f;                 //RGB-value to set color of the progressbar
-    private float a = 1.0f;                 //RGB-value to set color of the progressbar
-
+    
     void UpdateValues()
     {
-        ArduinoData = ArduinoScript.datas;
-        float distance= ArduinoScript.distance;
-        float CurrentPressure=ArduinoScript.CurrentPressure;
+        distance= ArduinoScript.distance;
+        CurrentPressure=ArduinoScript.CurrentPressure;
+        Debug.Log(CurrentPressure);
+        Debug.Log(distance);
         //CurrentPressure = Convert.ToInt32(ArduinoData[0]);
         //distance = Convert.ToInt32(ArduinoData[1]);
 
@@ -266,7 +271,7 @@ public class InputStrainInfo : MonoBehaviour
             }
         }
 
-        if (distance > 20)      //To change value of the maximum pressure according to distance in blood vessel
+        else      //To change value of the maximum pressure according to distance in blood vessel
         {
             MaximalPressure = 800;
             uiFloFieldCur.value = CurrentPressure;
