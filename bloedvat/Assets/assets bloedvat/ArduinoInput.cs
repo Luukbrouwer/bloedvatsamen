@@ -30,7 +30,7 @@ public class ArduinoInput : MonoBehaviour
     public Vector3 startGW;
     public float distance;
     public float CurrentPressure;
-    
+    public InputStrainInfo UI;
 
     
     void Start()
@@ -49,7 +49,7 @@ public class ArduinoInput : MonoBehaviour
         string[] datas= receivedstring.Split(";"); //split data tussen ';'
         //datas2= receivedstring.Split(";"); //split data tussen ';'
         float CurrentPressure = float.Parse(datas[0]);
-        float distance = float.Parse(datas[1]);
+        float distance = float.Parse(datas[1])/1000;
         PressureToForce= CurrentPressure * areaGuideWire * scalepressure;
         rb.AddForce(0, -PressureToForce * Time.deltaTime, 0);
 
@@ -64,6 +64,10 @@ public class ArduinoInput : MonoBehaviour
         }
         //Debug.Log("Arduino " + CurrentPressure.ToString());
         //Debug.Log("Arduino " + distance.ToString());
+
+        UI.CurrentPressure= CurrentPressure;
+        UI.distance=distance;
+
     }
 
 

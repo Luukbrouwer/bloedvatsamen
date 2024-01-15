@@ -191,8 +191,8 @@ public class InputStrainInfo : MonoBehaviour
     }
 
     private int progressValue = 0;          //Initialize start value of progressbar
-    private float distance;               //Distance the guidewire is in the bloodvessel
-    private float CurrentPressure;        //Variable that displays the current pressure of the GW on the BV
+    public float distance;               //Distance the guidewire is in the bloodvessel
+    public float CurrentPressure;        //Variable that displays the current pressure of the GW on the BV
     private float MaximalPressure = 0.00f;  //Variable that displays the maximum pressure of the GW on the BV
     private float RelativePressure = 0.00f; //Variable that displays the relative pressure of the GW on the BV
     private string[] ArduinoData;           //Data from Arduino
@@ -200,6 +200,7 @@ public class InputStrainInfo : MonoBehaviour
     private float g = 0.0f;                 //RGB-value to set color of the progressbar
     private float b = 0.0f;                 //RGB-value to set color of the progressbar
     private float a = 1.0f;                 //RGB-value to set color of the progressbar
+    private float relativeDistance;          //Distance of guidewire in bloodvessel relative to distance to vasoconstrictions
 
 
     // Update is called once per frame
@@ -216,104 +217,80 @@ public class InputStrainInfo : MonoBehaviour
         }
     }
 
-    
+    //private float areaSensor = Mathf.PI * Mathf.Pow((5.1 * Mathf.Pow(10, -3)), 2);    //Area of the pressure sensor in m^2
+
     void UpdateValues()
     {
-        distance= ArduinoScript.distance;
-        CurrentPressure=ArduinoScript.CurrentPressure;
-        Debug.Log(CurrentPressure);
-        Debug.Log(distance);
-        //CurrentPressure = Convert.ToInt32(ArduinoData[0]);
-        //distance = Convert.ToInt32(ArduinoData[1]);
-
-        if (distance > 0 & distance <= 20)  //To change value of the maximum pressure according to distance in blood vessel
+        //From force (N) to pressure (Pa)
+        //CurrentPressure = CurrentPressure * (9.8/100);      //Scale force back from 0-100N, to 0.3-9.8N
+        //CurrentPressure = CurrentPressure / areaSensor;     //Force from pressure sensor is divided by the area to gain the pressure on the area
+        //CurrentPressure = CurrentPressure * 0.01;          //Scale pressure from Pa to hPa
+        
+        //Debug.Log(CurrentPressure);
+        //Debug.Log(distance);
+        if (distance < 0)
         {
-            MaximalPressure = 400;
-            uiFloFieldCur.value = CurrentPressure;
-            uiFloFieldMax.value = MaximalPressure;
-
-            uiLabel.text = "Relative pressure: " + Convert.ToInt32(RelativePressure).ToString() + "%";
-            uiDistancePB.value = distance;
-
-            RelativePressure = CurrentPressure / MaximalPressure * 100;
-
-            if (RelativePressure <= 50)
-            {
-                r = 1.0f * (RelativePressure / 50);
-                g = 1.0f;
-
-                horzProgressBar.fillAmount = RelativePressure / 100;
-                horzProgressBar.color = new Color(r, g, b, a);
-            }
-
-            //Checks if the relative pressure is greater than 50 and smaller than or equal to 100 to be able to visualize in the
-            //progressbar with color (from yellow/orange to red)
-            if (RelativePressure > 50 & RelativePressure <= 100)
-            {
-                r = 1.0f;
-                g = 1.0f * (1 - (RelativePressure - 50.0f) / 50);
-
-                horzProgressBar.fillAmount = RelativePressure / 100;
-                horzProgressBar.color = new Color(r, g, b, a);
-            }
-
-            //If the relative pressure is larger than 100, the progressbar will display 100
-            if (RelativePressure > 100)
-            {
-                horzProgressBar.fillAmount = 1;
-                horzProgressBar.color = Color.red;
-            }
-            progressValue += 1;     //Increase progressValue by 1 to index the next timestamp data next time
-
-            for (int i = 0; i < healthBarPoints.Length; i++)
-            {
-                healthBarPoints[i].enabled = !DisplayHealthPoint(RelativePressure, i);
-            }
+            distance = 0;
         }
 
-        else      //To change value of the maximum pressure according to distance in blood vessel
+        relativeDistance = distance / BVscript.VClocation * 100;
+
+        if (relativeDistance >= 0 & relativeDistance <= 25)  //To change value of the maximum pressure according to distance in blood vessel
         {
-            MaximalPressure = 800;
-            uiFloFieldCur.value = CurrentPressure;
-            uiFloFieldMax.value = MaximalPressure;
+            MaximalPressure = 60;
+        }
+        if (relativeDistance > 25 & relativeDistance <= 50)  //To change value of the maximum pressure according to distance in blood vessel
+        {
+            MaximalPressure = 70;
+        }
+        if (relativeDistance > 50 & relativeDistance <= 75)  //To change value of the maximum pressure according to distance in blood vessel
+        {
+            MaximalPressure = 50;
+        }
+        if (relativeDistance > 75 & relativeDistance <= 100)  //To change value of the maximum pressure according to distance in blood vessel
+        {
+            MaximalPressure = 80;
+        }
 
-            uiLabel.text = "Relative pressure: " + Convert.ToInt32(RelativePressure).ToString() + "%";
-            uiDistancePB.value = distance;
+        uiFloFieldCur.value = CurrentPressure;
+        uiFloFieldMax.value = MaximalPressure;
 
-            RelativePressure = CurrentPressure / MaximalPressure * 100;
+        uiLabel.text = "Relative pressure: " + Convert.ToInt32(RelativePressure).ToString() + "%";
+        uiDistancePB.value = distance;
 
-            if (RelativePressure <= 50)
-            {
-                r = 1.0f * (RelativePressure / 50);
-                g = 1.0f;
+        RelativePressure = CurrentPressure / MaximalPressure * 100;
 
-                horzProgressBar.fillAmount = RelativePressure / 100;
-                horzProgressBar.color = new Color(r, g, b, a);
-            }
+        if (RelativePressure <= 50)
+        {
+            r = 1.0f * (RelativePressure / 50);
+            g = 1.0f;
 
-            //Checks if the relative pressure is greater than 50 and smaller than or equal to 100 to be able to visualize in the
-            //progressbar with color (from yellow/orange to red)
-            if (RelativePressure > 50 & RelativePressure <= 100)
-            {
-                r = 1.0f;
-                g = 1.0f * (1 - (RelativePressure - 50.0f) / 50);
+            horzProgressBar.fillAmount = RelativePressure / 100;
+            horzProgressBar.color = new Color(r, g, b, a);
+        }
 
-                horzProgressBar.fillAmount = RelativePressure / 100;
-                horzProgressBar.color = new Color(r, g, b, a);
-            }
+        //Checks if the relative pressure is greater than 50 and smaller than or equal to 100 to be able to visualize in the
+        //progressbar with color (from yellow/orange to red)
+        if (RelativePressure > 50 & RelativePressure <= 100)
+        {
+            r = 1.0f;
+            g = 1.0f * (1 - (RelativePressure - 50.0f) / 50);
 
-            //If the relative pressure is larger than 100, the progressbar will display 100
-            if (RelativePressure > 100)
-            {
-                horzProgressBar.fillAmount = 1;
-                horzProgressBar.color = Color.red;
-            }
-            progressValue += 1;     //Increase progressValue by 1 to index the next timestamp data next time
+            horzProgressBar.fillAmount = RelativePressure / 100;
+            horzProgressBar.color = new Color(r, g, b, a);
+        }
 
-            for (int i = 0; i < healthBarPoints.Length; i++)
-            {
-                healthBarPoints[i].enabled = !DisplayHealthPoint(RelativePressure, i);
-            }
+        //If the relative pressure is larger than 100, the progressbar will display 100
+        if (RelativePressure > 100)
+        {
+            horzProgressBar.fillAmount = 1;
+            horzProgressBar.color = Color.red;
+        }
+        progressValue += 1;     //Increase progressValue by 1 to index the next timestamp data next time
+
+        for (int i = 0; i < healthBarPoints.Length; i++)
+        {
+            healthBarPoints[i].enabled = !DisplayHealthPoint(RelativePressure, i);
         }
 
         /*if (progressValue < duration)
