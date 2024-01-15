@@ -24,6 +24,8 @@ public class ArduinoInput : MonoBehaviour
     
     public float areaGuideWire =1;
     public float PressureToForce;
+    public float scalepressure=10;
+    public Vector3 startGW;
    
     
 
@@ -33,7 +35,7 @@ public class ArduinoInput : MonoBehaviour
         //for arduino connection:
         data_stream.Open(); //initiate serial monitor "stream"
         beginGuwi= rb.transform.position;
-    }
+    }    
 
 
     void Update()
@@ -43,13 +45,18 @@ public class ArduinoInput : MonoBehaviour
         string[] datas = receivedstring.Split(";"); //split data tussen ';'
         float CurrentPressure = float.Parse(datas[0]);
 
-        PressureToForce= CurrentPressure * areaGuideWire;
+        PressureToForce= CurrentPressure * areaGuideWire * scalepressure;
         rb.AddForce(0, -PressureToForce * Time.deltaTime, 0);
 
         // voor bewegen van guidewire met magnetic angle sensor:===============================
         //float length= float.Parse(datas[0]) *0.00001f;
         //transform.position = new Vector3(beginGuwi[0], beginGuwi[1] - length, beginGuwi[2]);
         //=====================================================================================
+        
+        if ( rb.transform.position.y >= beginGuwi.y )
+        {
+            transform.position = beginGuwi;
+        }
     }
 
 
