@@ -237,11 +237,11 @@ public class InputStrainInfo : MonoBehaviour
 
         if (relativeDistance >= 0 & relativeDistance <= 25)  //To change value of the maximum pressure according to distance in blood vessel
         {
-            MaximalPressure = 60;
+            MaximalPressure = 50;
         }
         if (relativeDistance > 25 & relativeDistance <= 50)  //To change value of the maximum pressure according to distance in blood vessel
         {
-            MaximalPressure = 70;
+            MaximalPressure = 60;
         }
         if (relativeDistance > 50 & relativeDistance <= 75)  //To change value of the maximum pressure according to distance in blood vessel
         {
@@ -249,7 +249,20 @@ public class InputStrainInfo : MonoBehaviour
         }
         if (relativeDistance > 75 & relativeDistance <= 100)  //To change value of the maximum pressure according to distance in blood vessel
         {
-            MaximalPressure = 80;
+            MaximalPressure = 45;
+        }
+
+        if (BVscript.BVtype == "Aorta")
+        {
+            MaximalPressure += 3;
+        }
+        if (BVscript.BVtype == "Coronary artery")
+        {
+            MaximalPressure -= 4;
+        }
+        if (BVscript.BVtype == "Femoral artery")
+        {
+            MaximalPressure += 2;
         }
 
         uiFloFieldCur.value = CurrentPressure;

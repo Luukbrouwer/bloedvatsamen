@@ -49,7 +49,7 @@ public class ArduinoInput : MonoBehaviour
         string[] datas= receivedstring.Split(";"); //split data tussen ';'
         //datas2= receivedstring.Split(";"); //split data tussen ';'
         float CurrentPressure = float.Parse(datas[0]);
-        float distance = float.Parse(datas[1])/1000;
+        float distance = float.Parse(datas[1])/10000;
         PressureToForce= CurrentPressure * areaGuideWire * scalepressure;
         rb.AddForce(0, -PressureToForce * Time.deltaTime, 0);
 
@@ -60,7 +60,8 @@ public class ArduinoInput : MonoBehaviour
         
         if ( rb.transform.position.y >= beginGuwi.y )
         {
-            transform.position = beginGuwi;
+            rb.transform.position = beginGuwi;
+            //Debug.Log("test");
         }
         //Debug.Log("Arduino " + CurrentPressure.ToString());
         //Debug.Log("Arduino " + distance.ToString());

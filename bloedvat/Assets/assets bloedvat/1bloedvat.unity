@@ -782,7 +782,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 599228845}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5f1743f763b431a4fbaea09e2a1b0ca7, type: 3}
   m_Name: 
@@ -1167,6 +1167,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -6442175548764416217, guid: e76a499a49c941e46a1ad1c6b4d83501, type: 3}
+      propertyPath: springConstant
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 6708442411113713115, guid: e76a499a49c941e46a1ad1c6b4d83501, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
