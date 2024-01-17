@@ -156,7 +156,7 @@ public class InputStrainInfo : MonoBehaviour
         if (running == false)
         {
             //InvokeRepeating("UpdateValues", 0, TimeStep);    //Calls function UpdateProgressValue every TimeStep seconds
-            uiButton.text = "Running...";
+            uiButton.text = "Running... press to stop";
             running = true;
         }
 
@@ -182,7 +182,7 @@ public class InputStrainInfo : MonoBehaviour
 
         if (running == true)
         {
-            uiButton.text = "Stopped";
+            uiButton.text = "Stopped, press to start";
             uiGroupBox.visible = false;
             BVscript.uiGroupBox.visible = true;
             uiInfoLabel.visible = false;
@@ -274,7 +274,7 @@ public class InputStrainInfo : MonoBehaviour
 
         uiLabel.text = "Relative pressure: " + Convert.ToInt32(RelativePressure).ToString() + "%";
         uiDistancePB.value = distance;
-        BVscript.uiDistanceText.text = "Distance to vasoconstriction is: " + (Mathf.Round((uiDistancePB.highValue - distance) * 10.0f)/10.0f).ToString() + " cm";
+        BVscript.uiDistanceText.text = "Distance to vasoconstriction: " + (Mathf.Round((uiDistancePB.highValue - distance) * 10.0f)/10.0f).ToString() + " cm";
 
         RelativePressure = CurrentPressure / MaximalPressure * 100;
 

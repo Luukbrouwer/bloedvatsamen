@@ -118,16 +118,24 @@ public class InputBloodVesselInfo : MonoBehaviour
         
         if (VClocation > BVlength)
         {
-            uiScanWarning.text = "Location vasoconstriction outside of blood vessel";
+            uiScanWarning.text = "Location vasoconstriction outside of blood vessel.";
             uiScanWarning.style.color = Color.red;
         }
-
-        if (VClocation <= BVlength & uiScanWarning.text == "Location vasoconstriction outside of blood vessel")
+        if (VClocation <= BVlength & uiScanWarning.text == "Location vasoconstriction outside of blood vessel.")
         {
             uiScanWarning.text = "";
         }
 
-        if (BVlength != 0 & VClocation != 0 & BVtype != null & BVlength >= VClocation & PatientName != null & PatientName != "Type name")
+        if (BVlength < 0 || VClocation < 0)
+        {
+            uiScanWarning.text = "Blood vessel length and location of vasoconstriction should both be positive numbers.";
+        }
+        if (BVlength >= 0 & VClocation >= 0 & uiScanWarning.text == "Blood vessel length and location of vasoconstriction should be positive numbers.")
+        {
+            uiScanWarning.text = "";
+        }
+
+        if (BVlength != 0 & VClocation != 0 & BVtype != null & BVlength >= VClocation & PatientName != "" & PatientName != "Type name" & BVlength >= 0 & VClocation >= 0)
         {
             uiButton.text = "Next!";
             uiButton.style.color = Color.black;
@@ -139,7 +147,7 @@ public class InputBloodVesselInfo : MonoBehaviour
 
     public void OnButtonClick(ClickEvent evt)
     {
-        if (BVlength == 0 || VClocation == 0 || VClocation > BVlength || BVtype == null || PatientName == null || PatientName == "Type name")
+        if (BVlength == 0 || VClocation == 0 || VClocation > BVlength || BVtype == null || PatientName == "" || PatientName == "Type name" || BVlength < 0 || VClocation < 0)
         {
 /*            uiScanWarning.text = "Not all fields have been corretly filled in";
             uiScanWarning.style.color = Color.red;*/
