@@ -13,7 +13,7 @@ public class InputBloodVesselInfo : MonoBehaviour
 {
     UIDocument StrainInfoDocument;
     GroupBox uiInfoSurgeon;
-    UnityEngine.UIElements.Label uiDistanceText;
+    public UnityEngine.UIElements.Label uiDistanceText;
     ProgressBar uiDistancePB;
     public GroupBox uiGroupBox;
     UnityEngine.UIElements.Button uiButton;

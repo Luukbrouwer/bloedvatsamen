@@ -140,6 +140,9 @@ public class InputStrainInfo : MonoBehaviour
         uiGroupBox.style.borderLeftWidth = 3;
         uiGroupBox.style.borderLeftColor = Color.grey;
         uiBackButton.visible = false;
+
+        areaSensor = Mathf.PI * Mathf.Pow(radiusSensor, 2);             //Calculate area of the sensor according to pi*radius^2
+        Debug.Log("Area of the sensor is: " + areaSensor.ToString());
     }
 
     public float TimeStep = 1.00f;          //Time step with which the data is being gathered
@@ -217,14 +220,15 @@ public class InputStrainInfo : MonoBehaviour
         }
     }
 
-    //private float areaSensor = Mathf.PI * Mathf.Pow((5.1 * Mathf.Pow(10, -3)), 2);    //Area of the pressure sensor in m^2
+    public float radiusSensor = 0.0051f;    //Radius of the pressure sensor in m
+    private float areaSensor;               //Area of the pressure sensor in m^2
 
     void UpdateValues()
     {
         //From force (N) to pressure (Pa)
-        //CurrentPressure = CurrentPressure * (9.8/100);      //Scale force back from 0-100N, to 0.3-9.8N
-        //CurrentPressure = CurrentPressure / areaSensor;     //Force from pressure sensor is divided by the area to gain the pressure on the area
-        //CurrentPressure = CurrentPressure * 0.01;          //Scale pressure from Pa to hPa
+        CurrentPressure = (float)(CurrentPressure * (9.8 / 100));   //Scale force back from 0-100N, to 0.3-9.8N
+        CurrentPressure /= areaSensor;                              //Force from pressure sensor is divided by the area to gain the pressure on the area
+        CurrentPressure = (float)(CurrentPressure * 0.001);          //Scale pressure from Pa to hPa
         
         //Debug.Log(CurrentPressure);
         //Debug.Log(distance);
@@ -237,19 +241,19 @@ public class InputStrainInfo : MonoBehaviour
 
         if (relativeDistance >= 0 & relativeDistance <= 25)  //To change value of the maximum pressure according to distance in blood vessel
         {
-            MaximalPressure = 50;
+            MaximalPressure = 60.1f;
         }
         if (relativeDistance > 25 & relativeDistance <= 50)  //To change value of the maximum pressure according to distance in blood vessel
         {
-            MaximalPressure = 60;
+            MaximalPressure = 69.5f;
         }
         if (relativeDistance > 50 & relativeDistance <= 75)  //To change value of the maximum pressure according to distance in blood vessel
         {
-            MaximalPressure = 50;
+            MaximalPressure = 58.7f;
         }
         if (relativeDistance > 75 & relativeDistance <= 100)  //To change value of the maximum pressure according to distance in blood vessel
         {
-            MaximalPressure = 45;
+            MaximalPressure = 55.2f;
         }
 
         if (BVscript.BVtype == "Aorta")
@@ -265,11 +269,12 @@ public class InputStrainInfo : MonoBehaviour
             MaximalPressure += 2;
         }
 
-        uiFloFieldCur.value = CurrentPressure;
-        uiFloFieldMax.value = MaximalPressure;
+        uiFloFieldCur.value = Mathf.Round(CurrentPressure * 10.0f)/10.0f;
+        uiFloFieldMax.value = Mathf.Round(MaximalPressure * 10.0f)/10.0f;
 
         uiLabel.text = "Relative pressure: " + Convert.ToInt32(RelativePressure).ToString() + "%";
         uiDistancePB.value = distance;
+        BVscript.uiDistanceText.text = "Distance to vasoconstriction is: " + (Mathf.Round((uiDistancePB.highValue - distance) * 10.0f)/10.0f).ToString() + " cm";
 
         RelativePressure = CurrentPressure / MaximalPressure * 100;
 
