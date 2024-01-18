@@ -129,8 +129,9 @@ public class InputBloodVesselInfo : MonoBehaviour
         if (BVlength < 0 || VClocation < 0)
         {
             uiScanWarning.text = "Blood vessel length and location of vasoconstriction should both be positive numbers.";
+            uiScanWarning.style.color = Color.red;
         }
-        if (BVlength >= 0 & VClocation >= 0 & uiScanWarning.text == "Blood vessel length and location of vasoconstriction should be positive numbers.")
+        if (BVlength >= 0 & VClocation >= 0 & uiScanWarning.text == "Blood vessel length and location of vasoconstriction should both be positive numbers.")
         {
             uiScanWarning.text = "";
         }

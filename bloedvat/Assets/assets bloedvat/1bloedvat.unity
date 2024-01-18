@@ -975,6 +975,7 @@ MonoBehaviour:
   BVscript: {fileID: 698228003}
   distance: 0
   CurrentPressure: 0
+  radiusSensor: 0.0051
 --- !u!114 &698228005
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1906,7 +1907,7 @@ Transform:
   m_GameObject: {fileID: 1499302062}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3, y: 1.401, z: 3}
+  m_LocalPosition: {x: 3, y: 1.41, z: 3}
   m_LocalScale: {x: 1.2, y: 2.5, z: 1.2}
   m_ConstrainProportionsScale: 0
   m_Children: []
